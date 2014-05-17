@@ -17,14 +17,16 @@ namespace Vizr
 {
     public partial class MainWindow : Window
     {
-        private bool processTextChange = false;
+        private bool processTextChange = false; // flag to prevent textchange events if false
+        
+        private Commands commands = new Commands();
 
         public MainWindow()
         {
             InitializeComponent();
-            textQuery.Text = "";
 
             processTextChange = true;
+            textQuery.Text = "";
             textQuery.Focus();
         }
 
@@ -35,32 +37,48 @@ namespace Vizr
                 case Key.Escape:
                     this.Close();
                     break;
+
+                case Key.Enter:
+                    executeSelected();
+                    break;
+
                 case Key.Up:
                     listResults.SelectPrevious();
                     break;
+
                 case Key.Down:
                     listResults.SelectNext();
                     break;
+
                 default:
                     break;
             }
         }
 
+        private void executeSelected()
+        {
+            if (Launcher.Execute(listResults.SelectedItem as Command))
+                this.Close();
+            else
+                System.Media.SystemSounds.Beep.Play();
+        }
+
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!processTextChange) return;
+            updateResults();
+        }
 
-            var message = textQuery.Text;
-
+        private void updateResults()
+        {
             listResults.Items.Clear();
-            if (message == "d")
-            { 
-                listResults.Items.Add("hai");
-                listResults.Items.Add("2");
+
+            foreach (var item in commands.Query(textQuery.Text))
+            {
+                listResults.Items.Add(item);
             }
 
-            if (listResults.Items.Count != 0)
-                listResults.SelectedIndex = 0;
+            listResults.SelectFirst();
         }
     }
 }

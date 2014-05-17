@@ -29,5 +29,11 @@ namespace Vizr
             else
                 target.SelectedIndex--; // go to next
         }
+
+        public static void SelectFirst(this ListBox target)
+        {
+            if (target.Items.Count > 0)
+                target.SelectedIndex = 0;
+        }
     }
 }
