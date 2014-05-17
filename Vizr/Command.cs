@@ -9,18 +9,18 @@ namespace Vizr
     public class Command
     {
         [XmlAttribute]
+        public string Title { get; set; }
+        
+        [XmlAttribute]
         public string Pattern { get; set; }
         
         [XmlAttribute]
-        public string Title { get; set; }
-
-        [XmlAttribute]
         public int HitCount { get; set; }
 
-        [XmlElement]
+        [XmlAttribute]
         public string Application { get; set; }
         
-        [XmlElement]
+        [XmlText]
         public string Target { get; set; }
         
         public virtual bool Match(string text)
