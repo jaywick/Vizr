@@ -55,6 +55,17 @@ namespace Vizr
             }
         }
 
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            commands.Load();
+        }
+
+        private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!processTextChange) return;
+            updateResults();
+        }
+
         private void executeSelected()
         {
             var item = (listResults.SelectedItem as Command);
@@ -68,12 +79,6 @@ namespace Vizr
             {
                 System.Media.SystemSounds.Beep.Play();
             }
-        }
-
-        private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!processTextChange) return;
-            updateResults();
         }
 
         private void updateResults()
