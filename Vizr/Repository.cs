@@ -31,6 +31,7 @@ namespace Vizr
             {
                 IndentChars = "\t",
                 Indent = true,
+                OmitXmlDeclaration = true
             };
 
             using (var stream = File.OpenWrite(Common.CommandsFile))
@@ -40,6 +41,10 @@ namespace Vizr
                 var namespaces = new XmlSerializerNamespaces();
                 namespaces.Add("", "");
 
+                writer.WriteComment("\n\tWARNING!\n\t" + 
+                                    "Changes to default.xml will be lost when updating this\n\t" +
+                                    "program with featured commands of that version.\n\t" + 
+                                    "Please use the user.xml package instead!\n");
                 serializer.Serialize(writer, commands, namespaces);
             }
         }
