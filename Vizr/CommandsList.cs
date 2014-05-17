@@ -8,19 +8,11 @@ namespace Vizr
 {
     public class CommandsList
     {
-        private string filePath;
-
         public CommandsList()
         {
             Items = new List<Command>();
             MetaItems = new List<Command>();
             addMetaCommands();
-        }
-
-        public CommandsList(string filePath)
-            : this()
-        {
-            this.filePath = filePath;
         }
 
         private void addMetaCommands()
@@ -30,8 +22,7 @@ namespace Vizr
             {
                 Pattern = "About",
                 Title = "About this app",
-                Target = "https://github.com/jaywick/vizr",
-                HitCount = 1
+                Target = "https://github.com/jaywick/vizr"
             });
 
             // edit commands
@@ -39,8 +30,7 @@ namespace Vizr
             {
                 Pattern = "Edit",
                 Title = "Edit commands",
-                Target = filePath,
-                HitCount = 1
+                Target = Common.CommandsFile
             });
         }
 

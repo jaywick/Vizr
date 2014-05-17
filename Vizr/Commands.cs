@@ -11,16 +11,12 @@ namespace Vizr
 {
     public class Commands
     {
-        private CommandsList commands;
-        private string path;
+        private CommandsList commands = new CommandsList();
 
         #region Serialization
 
         public Commands()
         {
-            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "commands.xml");
-            commands = new CommandsList(path);
-
             Load();
         }
 
@@ -32,7 +28,7 @@ namespace Vizr
         public void Save()
         {
             var serializer = new XmlSerializer(typeof(CommandsList));
-            using (var stream = File.OpenWrite(path))
+            using (var stream = File.OpenWrite(Common.CommandsFile))
             {
                 serializer.Serialize(stream, commands);
             }
@@ -47,7 +43,7 @@ namespace Vizr
             {
                 Pattern = "Example",
                 Title = "Opens example.com",
-                Target = "https://example.com",
+                Target = "http://example.com",
             });
 
             // google
@@ -63,7 +59,7 @@ namespace Vizr
             {
                 Pattern = @"\?(.+)",
                 Title = "I'm feeling lucky '{0}'",
-                Target = "http://www.google.com/search?q={0}&btnI",
+                Target = "https://www.google.com/search?q={0}&btnI",
             });
 
             // find on pc
@@ -80,13 +76,13 @@ namespace Vizr
 
         public void Load()
         {
-            if (!File.Exists(path))
+            if (!File.Exists(Common.CommandsFile))
                 saveDefault();
 
             try
             {
                 var serializer = new XmlSerializer(typeof(CommandsList));
-                using (var stream = File.OpenRead(path))
+                using (var stream = File.OpenRead(Common.CommandsFile))
                 {
                     commands = (CommandsList)serializer.Deserialize(stream);
                 }
@@ -100,7 +96,7 @@ namespace Vizr
                                                "Exception information:\n  " + message, "Vizr",
                                                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
 
-                System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", path));
+                System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Common.CommandsFile));
 
                 Environment.Exit(1);
             }

@@ -35,5 +35,10 @@ namespace Vizr
             if (target.Items.Count > 0)
                 target.SelectedIndex = 0;
         }
+
+        public static bool IsNullOrEmpty(this string target)
+        {
+            return target == null || target == "";
+        }
     }
 }

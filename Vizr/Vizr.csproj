@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CommandsList.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Request.cs" />

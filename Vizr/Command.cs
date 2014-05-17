@@ -33,7 +33,7 @@ namespace Vizr
 
         public virtual void Launch(string originalQuery)
         {
-            Launcher.Execute(this.Application, this.Target);
+            Launcher.Execute(this.Target, this.Application);
             HitCount++;
         }
 
