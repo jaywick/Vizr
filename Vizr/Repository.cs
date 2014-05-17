@@ -51,15 +51,24 @@ namespace Vizr
             // launch website
             commands.Items.Add(new Command()
             {
-                Pattern = "Example",
-                Title = "Opens example.com",
-                Target = "http://example.com",
+                Pattern = "Visit Jay Wick Labs",
+                Title = "Visit Jay Wick Labs",
+                Target = "http://labs.jay-wick.com",
+                HitCount = 1
             });
 
             // google
             commands.Items.Add(new Request()
             {
-                Pattern = @"\?(.+)",
+                Pattern = @"imdb (.+)",
+                Title = "Search IMDB for '{0}'",
+                Target = "http://www.imdb.com/find?q={0}",
+            });
+
+            // google
+            commands.Items.Add(new Request()
+            {
+                Pattern = @"(.+)",
                 Title = "Google for '{0}'",
                 Target = "https://www.google.com/search?q={0}",
             });
@@ -67,7 +76,7 @@ namespace Vizr
             // google IFL
             commands.Items.Add(new Request()
             {
-                Pattern = @"\?(.+)",
+                Pattern = @"(.+)",
                 Title = "I'm feeling lucky '{0}'",
                 Target = "https://www.google.com/search?q={0}&btnI",
             });
@@ -76,7 +85,7 @@ namespace Vizr
             /// see more: http://msdn.microsoft.com/en-us/library/ff684385.aspx
             commands.Items.Add(new Request()
             {
-                Pattern = @"\?(.+)",
+                Pattern = @"(.+)",
                 Title = "Search PC for '{0}'",
                 Target = "search-ms:query={0}&",
             });
