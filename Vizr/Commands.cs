@@ -42,14 +42,37 @@ namespace Vizr
         {
             commands.Items.Clear();
 
-            // example
+            // launch website
             commands.Items.Add(new Command()
             {
-                Name = "Example",
-                Subtitle = "Opens example.com",
-                CommandName = "explorer.exe",
-                Arguments = "https://example.com",
-                HitCount = 1
+                Pattern = "Example",
+                Title = "Opens example.com",
+                Target = "https://example.com",
+            });
+
+            // google
+            commands.Items.Add(new Request()
+            {
+                Pattern = @"\?(.+)",
+                Title = "Google for '{0}'",
+                Target = "https://www.google.com/search?q={0}",
+            });
+
+            // google IFL
+            commands.Items.Add(new Request()
+            {
+                Pattern = @"\?(.+)",
+                Title = "I'm feeling lucky '{0}'",
+                Target = "http://www.google.com/search?q={0}&btnI",
+            });
+
+            // find on pc
+            /// see more: http://msdn.microsoft.com/en-us/library/ff684385.aspx
+            commands.Items.Add(new Request()
+            {
+                Pattern = @"\?(.+)",
+                Title = "Search PC for '{0}'",
+                Target = "search-ms:query={0}&",
             });
 
             Save();
@@ -60,10 +83,26 @@ namespace Vizr
             if (!File.Exists(path))
                 saveDefault();
 
-            var serializer = new XmlSerializer(typeof(CommandsList));
-            using (var stream = File.OpenRead(path))
+            try
             {
-                commands = (CommandsList)serializer.Deserialize(stream);
+                var serializer = new XmlSerializer(typeof(CommandsList));
+                using (var stream = File.OpenRead(path))
+                {
+                    commands = (CommandsList)serializer.Deserialize(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                var message = (ex.InnerException == null) ? ex.Message : ex.InnerException.Message;
+
+                System.Windows.MessageBox.Show("Saved commands could not be loaded. This is not unusual as this software is pre-alpha.\n\n" +
+                                               "Try editing the file and opening Vizr again or delete the file to restore default commands.\n\n" +
+                                               "Exception information:\n  " + message, "Vizr",
+                                               System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+
+                System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", path));
+
+                Environment.Exit(1);
             }
         }
 
@@ -71,7 +110,8 @@ namespace Vizr
 
         public IEnumerable<Command> Query(string text)
         {
-            var results = commands.AllItems.Where(c => c.Name.ToLower().StartsWith(text.ToLower().Trim()) || c.Name.Contains(" " + text.ToLower().Trim()));
+            var results = commands.AllItems.Where(c => c.Match(text));
+
             return results;
         }
     }

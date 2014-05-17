@@ -8,14 +8,17 @@ namespace Vizr
 {
     class Launcher
     {
-        public static bool Execute(Command command)
+        public static bool Execute(string command, string argument = "")
         {
             if (command == null)
                 return false;
 
             try
             {
-                Process.Start(command.CommandName, command.Arguments);
+                if (argument == "")
+                    Process.Start(command);
+                else
+                    Process.Start(command, argument);
                 return true;
             }
             catch (Exception)

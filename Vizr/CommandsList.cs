@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    [XmlRoot("Items")]
     public class CommandsList
     {
         private string filePath;
@@ -29,25 +28,25 @@ namespace Vizr
             // about app
             MetaItems.Add(new Command()
             {
-                Name = "About",
-                Subtitle = "About this app",
-                CommandName = "explorer.exe",
-                Arguments = "https://github.com/jaywick/vizr",
+                Pattern = "About",
+                Title = "About this app",
+                Target = "https://github.com/jaywick/vizr",
                 HitCount = 1
             });
 
             // edit commands
             MetaItems.Add(new Command()
             {
-                Name = "Edit",
-                Subtitle = "Edit commands",
-                CommandName = "explorer.exe",
-                Arguments = filePath,
+                Pattern = "Edit",
+                Title = "Edit commands",
+                Target = filePath,
                 HitCount = 1
             });
         }
 
-        [XmlElement("Command")]
+        [XmlArray]
+        [XmlArrayItem(ElementName = "Command", Type = typeof(Command))]
+        [XmlArrayItem(ElementName = "Request", Type = typeof(Request))]
         public List<Command> Items { get; set; }
 
         [XmlIgnore]

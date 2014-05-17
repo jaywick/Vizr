@@ -57,10 +57,17 @@ namespace Vizr
 
         private void executeSelected()
         {
-            if (Launcher.Execute(listResults.SelectedItem as Command))
+            var item = (listResults.SelectedItem as Command);
+
+            if (item != null)
+            {
+                item.Launch(textQuery.Text);
                 this.Close();
+            }
             else
+            {
                 System.Media.SystemSounds.Beep.Play();
+            }
         }
 
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)

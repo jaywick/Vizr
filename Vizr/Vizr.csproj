@@ -57,6 +57,7 @@
     <Compile Include="CommandsList.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="Request.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
