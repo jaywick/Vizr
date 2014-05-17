@@ -27,7 +27,7 @@ namespace Vizr
 
         public override void Launch(string originalQuery)
         {
-            Launcher.Execute(modifiedArgument);
+            Launcher.Execute(modifiedArgument, this.Application);
             HitCount++;
         }
 
