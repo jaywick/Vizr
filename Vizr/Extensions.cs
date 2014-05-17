@@ -40,5 +40,16 @@ namespace Vizr
         {
             return target == null || target == "";
         }
+
+        public static IEnumerable<string> Split(this string target, string separator)
+        {
+            return target.Split(new[] { separator }, StringSplitOptions.None);
+        }
+
+        public static bool ContainsWordStartingWith(this string target, string value)
+        {
+            var parts = target.Split(" ").ToList();
+            return parts.Exists(word => word.StartsWith(value));
+        }
     }
 }

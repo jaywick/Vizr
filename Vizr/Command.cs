@@ -25,10 +25,7 @@ namespace Vizr
         
         public virtual bool Match(string text)
         {
-            bool startsWith = this.Pattern.ToLower().StartsWith(text.ToLower().Trim());
-            bool innerWordStartsWith = this.Pattern.Contains(" " + text.ToLower().Trim());
-
-            return startsWith || innerWordStartsWith;
+            return Pattern.ToLower().ContainsWordStartingWith(text.ToLower());
         }
 
         public virtual void Launch(string originalQuery)

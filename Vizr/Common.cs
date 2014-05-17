@@ -10,7 +10,7 @@ namespace Vizr
     {
         static Common()
         {
-            CommandsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "commands.xml");
+            CommandsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "default.xml");
         }
 
         public static string CommandsFile { get; private set; }
