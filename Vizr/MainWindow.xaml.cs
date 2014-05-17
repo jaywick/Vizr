@@ -80,7 +80,7 @@ namespace Vizr
         {
             listResults.Items.Clear();
 
-            foreach (var item in commands.Query(textQuery.Text))
+            foreach (var item in commands.Query(textQuery.Text).Take(5))
             {
                 listResults.Items.Add(item);
             }
