@@ -19,7 +19,7 @@ namespace Vizr
     {
         private bool processTextChange = false; // flag to prevent textchange events if false
         
-        private Commands commands = new Commands();
+        private Repository commands = new Repository();
 
         public MainWindow()
         {

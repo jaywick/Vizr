@@ -9,28 +9,38 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class Commands
+    public class Repository
     {
-        private CommandsList commands = new CommandsList();
+        private VizrPackage commands = new VizrPackage();
 
         #region Serialization
 
-        public Commands()
+        public Repository()
         {
             Load();
         }
 
-        ~Commands()
+        ~Repository()
         {
             Save();
         }
 
         public void Save()
         {
-            var serializer = new XmlSerializer(typeof(CommandsList));
-            using (var stream = File.OpenWrite(Common.CommandsFile))
+            var settings = new XmlWriterSettings()
             {
-                serializer.Serialize(stream, commands);
+                IndentChars = "\t",
+                Indent = true,
+            };
+
+            using (var stream = File.OpenWrite(Common.CommandsFile))
+            using (var writer = XmlWriter.Create(stream, settings))
+            {
+                var serializer = new XmlSerializer(typeof(VizrPackage));
+                var namespaces = new XmlSerializerNamespaces();
+                namespaces.Add("", "");
+
+                serializer.Serialize(writer, commands, namespaces);
             }
         }
 
@@ -81,10 +91,9 @@ namespace Vizr
 
             try
             {
-                var serializer = new XmlSerializer(typeof(CommandsList));
                 using (var stream = File.OpenRead(Common.CommandsFile))
                 {
-                    commands = (CommandsList)serializer.Deserialize(stream);
+                    commands = new XmlSerializer(typeof(VizrPackage)).Deserialize(stream) as VizrPackage;
                 }
             }
             catch (Exception ex)

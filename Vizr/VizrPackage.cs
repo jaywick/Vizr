@@ -6,10 +6,12 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class CommandsList
+    public class VizrPackage
     {
-        public CommandsList()
+        public VizrPackage()
         {
+            Version = "0.1";
+
             Items = new List<Command>();
             MetaItems = new List<Command>();
             addMetaCommands();
@@ -33,6 +35,9 @@ namespace Vizr
                 Target = Common.CommandsFile
             });
         }
+
+        [XmlAttribute]
+        public string Version { get; set; }
 
         [XmlArray]
         [XmlArrayItem(ElementName = "Command", Type = typeof(Command))]

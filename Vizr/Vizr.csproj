@@ -54,10 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CommandsList.cs" />
+    <Compile Include="VizrPackage.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Launcher.cs" />
-    <Compile Include="Commands.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="Request.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
