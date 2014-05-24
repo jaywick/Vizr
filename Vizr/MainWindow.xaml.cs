@@ -18,7 +18,7 @@ namespace Vizr
     public partial class MainWindow : Window
     {
         private bool processTextChange = false; // flag to prevent textchange events if false
-        
+        HotKey hotkey;
         private Repository commands = new Repository();
 
         public MainWindow()
@@ -27,7 +27,27 @@ namespace Vizr
 
             processTextChange = true;
             textQuery.Text = "";
-            textQuery.Focus();
+
+            if (StartupOptions.IsBackgroundStart)
+                backgroundStart();
+        }
+
+        ~MainWindow()
+        {
+            if (hotkey != null)
+                hotkey.Dispose();
+        }
+
+        private void backgroundStart()
+        {
+            this.Hide();
+            hotkey = new HotKey(Key.Space, KeyModifier.Alt);
+            hotkey.Activated += Hotkey_Activated;
+        }
+
+        void Hotkey_Activated()
+        {
+            this.Show();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -35,7 +55,7 @@ namespace Vizr
             switch (e.Key)
             {
                 case Key.Escape:
-                    this.Close();
+                    exit();
                     break;
 
                 case Key.Enter:
@@ -58,6 +78,7 @@ namespace Vizr
         private void Window_Activated(object sender, EventArgs e)
         {
             commands.Load();
+            textQuery.Focus();
         }
 
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
@@ -73,12 +94,22 @@ namespace Vizr
             if (item != null)
             {
                 item.Launch(textQuery.Text);
-                this.Close();
+                exit();
             }
             else
             {
                 System.Media.SystemSounds.Beep.Play();
             }
+        }
+
+        private void exit()
+        {
+            textQuery.Clear();
+
+            if (StartupOptions.IsBackgroundStart)
+                this.Hide();
+            else
+                this.Close();
         }
 
         private void updateResults()
