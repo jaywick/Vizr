@@ -15,9 +15,6 @@ namespace Vizr
         public string Pattern { get; set; }
         
         [XmlAttribute]
-        public int HitCount { get; set; }
-
-        [XmlAttribute]
         public string Application { get; set; }
         
         [XmlText]
@@ -31,7 +28,6 @@ namespace Vizr
         public virtual void Launch(string originalQuery)
         {
             Launcher.Execute(this.Target, this.Application);
-            HitCount++;
         }
 
         public override string ToString()

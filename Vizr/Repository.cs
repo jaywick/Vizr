@@ -20,11 +20,6 @@ namespace Vizr
             Load();
         }
 
-        ~Repository()
-        {
-            Save();
-        }
-
         public void Save()
         {
             var settings = new XmlWriterSettings()
@@ -59,7 +54,6 @@ namespace Vizr
                 Pattern = "Visit Jay Wick Labs",
                 Title = "Visit Jay Wick Labs",
                 Target = "http://labs.jay-wick.com",
-                HitCount = 1
             });
 
             // google
