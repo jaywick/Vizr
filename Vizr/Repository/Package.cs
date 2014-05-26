@@ -12,7 +12,7 @@ namespace Vizr
         public Package()
         {
             Version = "0.1";
-            Items = new List<QueryItem>();
+            Items = new List<Entry>();
             Enabled = true;
             Priority = 0;
         }
@@ -35,7 +35,7 @@ namespace Vizr
         [XmlArray]
         [XmlArrayItem(ElementName = "Action", Type = typeof(Action))]
         [XmlArrayItem(ElementName = "Request", Type = typeof(Request))]
-        public virtual List<QueryItem> Items { get; set; }
+        public virtual List<Entry> Items { get; set; }
 
         [XmlIgnore]
         public string Name { get; set; }

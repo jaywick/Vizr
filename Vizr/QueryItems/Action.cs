@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class Action : QueryItem, ILaunchable
+    public class Action : Entry, ILaunchable
     {
         public Action()
         {

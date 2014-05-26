@@ -108,7 +108,7 @@ namespace Vizr
 
         private void autoCompleteSelected()
         {
-            var item = (listResults.SelectedItem as QueryItem);
+            var item = (listResults.SelectedItem as Entry);
             
             if (item == null || item is Request)
                 return;
@@ -119,7 +119,7 @@ namespace Vizr
 
         private void executeSelected()
         {
-            var item = (listResults.SelectedItem as QueryItem);
+            var item = (listResults.SelectedItem as Entry);
 
             if (item != null)
             {

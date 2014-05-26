@@ -6,12 +6,12 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class QueryItem
+    public class Entry
     {
         private string title = "";
         private string pattern = "";
 
-        public QueryItem()
+        public Entry()
         {
             // defaults
             Enabled = true;

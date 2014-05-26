@@ -90,7 +90,7 @@ namespace Vizr
 
         #endregion
 
-        public IEnumerable<QueryItem> Query(string text)
+        public IEnumerable<Entry> Query(string text)
         {
             var allCommands = Items.Values.Where(package => package.Enabled)
                                           .OrderByDescending(package => package.Priority)

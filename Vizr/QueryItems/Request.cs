@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class Request : QueryItem, ILaunchable
+    public class Request : Entry, ILaunchable
     {
         string modifiedArgument = "";
         string extract = "";
