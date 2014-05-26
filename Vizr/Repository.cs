@@ -93,8 +93,11 @@ namespace Vizr
 
         public IEnumerable<Command> Query(string text)
         {
-            var results = Items.Values.SelectMany(p => p.Items).Where(c => c.Match(text));
-            return results;
+            var allCommands = Items.Values.Where(package => package.Enabled)
+                                          .OrderByDescending(package => package.Priority)
+                                          .SelectMany(package => package.Items);
+
+            return allCommands.Where(commands => commands.Enabled && commands.Match(text));
         }
     }
 }

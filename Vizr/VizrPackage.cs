@@ -12,6 +12,8 @@ namespace Vizr
         {
             Version = "0.1";
             Items = new List<Command>();
+            Enabled = true;
+            Priority = 0;
         }
 
         public VizrPackage(string name)
@@ -22,6 +24,12 @@ namespace Vizr
 
         [XmlAttribute]
         public string Version { get; set; }
+
+        [XmlAttribute]
+        public bool Enabled { get; set; }
+
+        [XmlAttribute]
+        public int Priority { get; set; }
 
         [XmlArray]
         [XmlArrayItem(ElementName = "Command", Type = typeof(Command))]
