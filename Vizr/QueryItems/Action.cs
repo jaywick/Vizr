@@ -23,7 +23,8 @@ namespace Vizr
 
         public override bool Match(string text)
         {
-            return Pattern.ToLower().ContainsWordStartingWith(text.ToLower());
+            return Pattern.ToLower().ContainsWordStartingWith(text.ToLower())
+                || Pattern.ToLower().StartsWith(text.ToLower());
         }
 
         public void Launch(string originalQuery)
