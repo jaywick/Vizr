@@ -30,12 +30,12 @@ The current build supports the following template
 ## Terms
 | Term | Description |
 |------|-------------|
-| **Package** | A list of entries |
-| **Entry** | An item that appears in the list of results |
-| **Action** | An instruction like 'run this file' |
-| **Request** | An instruction involving an argument such as 'define <word>' |
-| **Pattern** | Text to match an entry _(for requests it can include regular expressions)_ |
-| **Launchable** | an entry that can launch something _(e.g. webpage, file)_ |
-| **`{0}`** | the placeholder for the argument |
+| Package | A list of entries |
+| Entry | An item that appears in the list of results |
+| Action | An instruction like 'run this file' |
+| Request | An instruction involving an argument such as 'define <word>' |
+| Pattern | Text to match an entry _(for requests it can include regular expressions)_ |
+| Launchable | an entry that can launch something _(e.g. webpage, file)_ |
+| `{0}` | the placeholder for the argument |
 
 ![Entry and related classes](ClassDiagram.png)
