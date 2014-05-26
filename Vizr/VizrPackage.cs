@@ -34,12 +34,12 @@ namespace Vizr
         [XmlArray]
         [XmlArrayItem(ElementName = "Command", Type = typeof(Command))]
         [XmlArrayItem(ElementName = "Request", Type = typeof(Request))]
-        public List<Command> Items { get; set; }
+        public virtual List<Command> Items { get; set; }
 
         [XmlIgnore]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
 
-        public void Tidy()
+        internal void Tidy()
         {
             foreach (var item in Items)
             {
