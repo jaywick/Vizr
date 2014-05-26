@@ -12,6 +12,7 @@ namespace Vizr
         {
             // defaults
             Enabled = true;
+            Admin = false;
         }
 
         [XmlAttribute]
@@ -26,6 +27,9 @@ namespace Vizr
         [XmlAttribute]
         public bool Enabled { get; set; }
 
+        [XmlAttribute]
+        public bool Admin { get; set; }
+
         [XmlText]
         public string Target { get; set; }
 
@@ -36,7 +40,7 @@ namespace Vizr
 
         public virtual void Launch(string originalQuery)
         {
-            Launcher.Execute(this.Target, this.Application);
+            Launcher.Execute(this.Target, this.Application, this.Admin);
         }
 
         public override string ToString()

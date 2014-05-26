@@ -8,14 +8,23 @@ namespace Vizr
 {
     class Launcher
     {
-        public static bool Execute(string target, string application = null)
+        public static bool Execute(string target, string application = null, bool runAsAdmin = false)
         {
             try
             {
-                if (application.IsNullOrEmpty())
-                    Process.Start(target);
-                else
-                    Process.Start(application, target);
+                var info = new ProcessStartInfo(target);
+
+                if (!application.IsNullOrEmpty())
+                {
+                    info.FileName = application;
+                    info.Arguments = target;
+                }
+
+                if (runAsAdmin)
+                    info.Verb = "runas";
+
+                Process.Start(info);
+
                 return true;
             }
             catch (Exception)
