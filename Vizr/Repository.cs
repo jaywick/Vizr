@@ -11,17 +11,17 @@ namespace Vizr
 {
     public class Repository
     {
-        private Dictionary<string, VizrPackage> Items;
+        private Dictionary<string, Package> Items;
 
         #region Serialization
 
         public Repository()
         {
-            Items = new Dictionary<string, VizrPackage>();
+            Items = new Dictionary<string, Package>();
             Load();
         }
 
-        public void Save(VizrPackage package)
+        public void Save(Package package)
         {
             var settings = new XmlWriterSettings()
             {
@@ -33,7 +33,7 @@ namespace Vizr
             using (var stream = RepositoryHelper.GetPathFromPackageName(package.Name).OpenWrite())
             using (var writer = XmlWriter.Create(stream, settings))
             {
-                var serializer = new XmlSerializer(typeof(VizrPackage));
+                var serializer = new XmlSerializer(typeof(Package));
                 var namespaces = new XmlSerializerNamespaces();
                 namespaces.Add("", "");
 
@@ -62,9 +62,8 @@ namespace Vizr
 
                     using (var stream = File.OpenRead(item.FullName))
                     {
-                        var package = new XmlSerializer(typeof(VizrPackage)).Deserialize(stream) as VizrPackage;
+                        var package = new XmlSerializer(typeof(Package)).Deserialize(stream) as Package;
                         package.Name = item.GetNameWithoutExtension();
-                        package.Tidy();
 
                         Items.Add(package.Name, package);
                     }
@@ -72,11 +71,11 @@ namespace Vizr
             }
             catch (Exception ex)
             {
-                var message = (ex.InnerException == null) ? ex.Message : ex.InnerException.Message;
+                var message = ex.GetBaseException().Message;
 
-                System.Windows.MessageBox.Show(string.Format("Package '{0}' could not be loaded. This is not unusual as this software is pre-alpha.\n\n" +
+                System.Windows.MessageBox.Show(string.Format("Package '{0}' could not be loaded. This is not unusual as this software is pre-alpha. " +
                                                "Try editing the file and opening Vizr again or delete the file to restore default commands.\n\n" +
-                                               "Exception information:\n  {1}", lastItemTried, message),
+                                               "Exception information: \"{1}\"", lastItemTried, message),
                                                "Vizr",
                                                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
 
@@ -91,7 +90,7 @@ namespace Vizr
 
         #endregion
 
-        public IEnumerable<Command> Query(string text)
+        public IEnumerable<QueryItem> Query(string text)
         {
             var allCommands = Items.Values.Where(package => package.Enabled)
                                           .OrderByDescending(package => package.Priority)

@@ -6,17 +6,18 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class VizrPackage
+    [XmlType("VizrPackage")]
+    public class Package
     {
-        public VizrPackage()
+        public Package()
         {
             Version = "0.1";
-            Items = new List<Command>();
+            Items = new List<QueryItem>();
             Enabled = true;
             Priority = 0;
         }
 
-        public VizrPackage(string name)
+        public Package(string name)
             : this()
         {
             this.Name = name;
@@ -32,23 +33,11 @@ namespace Vizr
         public int Priority { get; set; }
 
         [XmlArray]
-        [XmlArrayItem(ElementName = "Command", Type = typeof(Command))]
+        [XmlArrayItem(ElementName = "Action", Type = typeof(Action))]
         [XmlArrayItem(ElementName = "Request", Type = typeof(Request))]
-        public virtual List<Command> Items { get; set; }
+        public virtual List<QueryItem> Items { get; set; }
 
         [XmlIgnore]
         public string Name { get; set; }
-
-        internal void Tidy()
-        {
-            foreach (var item in Items)
-            {
-                if (item is Command)
-                {
-                    if (item.Pattern.IsNullOrEmpty()) item.Pattern = item.Title;
-                    if (item.Title.IsNullOrEmpty()) item.Title = item.Pattern;
-                }
-            }
-        }
     }
 }

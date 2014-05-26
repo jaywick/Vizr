@@ -8,12 +8,12 @@ namespace Vizr
 {
     public class FactoryPackages
     {
-        public static VizrPackage CreateDefaultPackage()
+        public static Package CreateDefaultPackage()
         {
-            var package = new VizrPackage(RepositoryHelper.DefaultPackageName);
+            var package = new Package(RepositoryHelper.DefaultPackageName);
 
             // labs link
-            package.Items.Add(new Command()
+            package.Items.Add(new Action()
             {
                 Pattern = "Visit Jay Wick Labs",
                 Title = "Visit Jay Wick Labs",
@@ -56,12 +56,12 @@ namespace Vizr
             return package;
         }
 
-        public static VizrPackage CreateMetaPackage()
+        public static Package CreateMetaPackage()
         {
-            var package = new VizrPackage(RepositoryHelper.MetaPackageName);
+            var package = new Package(RepositoryHelper.MetaPackageName);
 
             // labs link
-            package.Items.Add(new Command()
+            package.Items.Add(new Action()
             {
                 Pattern = "About",
                 Title = "About this app",
@@ -69,7 +69,7 @@ namespace Vizr
             });
 
             // edit commands
-            package.Items.Add(new Command()
+            package.Items.Add(new Action()
             {
                 Pattern = "Edit",
                 Title = "Edit commands",

@@ -7,10 +7,16 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class Request : Command
+    public class Request : QueryItem, ILaunchable
     {
         string modifiedArgument = "";
         string extract = "";
+
+        [XmlAttribute]
+        public string Application { get; set; }
+
+        [XmlAttribute]
+        public bool Admin { get; set; }
 
         public override bool Match(string text)
         {
@@ -25,7 +31,7 @@ namespace Vizr
             return query.Success;
         }
 
-        public override void Launch(string originalQuery)
+        public void Launch(string originalQuery)
         {
             Launcher.Execute(modifiedArgument, this.Application);
         }

@@ -59,7 +59,9 @@
     </ApplicationDefinition>
     <Compile Include="FactoryPackages.cs" />
     <Compile Include="HotKey.cs" />
-    <Compile Include="VizrPackage.cs" />
+    <Compile Include="ILaunchable.cs" />
+    <Compile Include="Action.cs" />
+    <Compile Include="Package.cs" />
     <Compile Include="RepositoryHelper.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Repository.cs" />
@@ -72,7 +74,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Command.cs" />
+    <Compile Include="QueryItem.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
