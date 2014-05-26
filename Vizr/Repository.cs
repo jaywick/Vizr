@@ -11,16 +11,17 @@ namespace Vizr
 {
     public class Repository
     {
-        private VizrPackage commands = new VizrPackage();
+        private Dictionary<string, VizrPackage> Items;
 
         #region Serialization
 
         public Repository()
         {
+            Items = new Dictionary<string, VizrPackage>();
             Load();
         }
 
-        public void Save()
+        public void Save(VizrPackage package)
         {
             var settings = new XmlWriterSettings()
             {
@@ -29,102 +30,70 @@ namespace Vizr
                 OmitXmlDeclaration = true
             };
 
-            using (var stream = File.OpenWrite(Common.CommandsFile))
+            using (var stream = RepositoryHelper.GetPathFromPackageName(package.Name).OpenWrite())
             using (var writer = XmlWriter.Create(stream, settings))
             {
                 var serializer = new XmlSerializer(typeof(VizrPackage));
                 var namespaces = new XmlSerializerNamespaces();
                 namespaces.Add("", "");
 
-                writer.WriteComment("\n\tWARNING!\n\t" + 
-                                    "Changes to default.xml will be lost when updating this\n\t" +
-                                    "program with featured commands of that version.\n\t" + 
-                                    "Please use the user.xml package instead!\n");
-                serializer.Serialize(writer, commands, namespaces);
+                if (package.Name == RepositoryHelper.DefaultPackageName)
+                    writer.WriteComment(RepositoryHelper.DefaultXMLWarning);
+
+                serializer.Serialize(writer, package, namespaces);
             }
-        }
-
-        private void saveDefault()
-        {
-            commands.Items.Clear();
-
-            // launch website
-            commands.Items.Add(new Command()
-            {
-                Pattern = "Visit Jay Wick Labs",
-                Title = "Visit Jay Wick Labs",
-                Target = "http://labs.jay-wick.com",
-            });
-
-            // google
-            commands.Items.Add(new Request()
-            {
-                Pattern = @"imdb (.+)",
-                Title = "Search IMDB for '{0}'",
-                Target = "http://www.imdb.com/find?q={0}",
-            });
-
-            // google
-            commands.Items.Add(new Request()
-            {
-                Pattern = @"(.+)",
-                Title = "Google for '{0}'",
-                Target = "https://www.google.com/search?q={0}",
-            });
-
-            // google IFL
-            commands.Items.Add(new Request()
-            {
-                Pattern = @"(.+)",
-                Title = "I'm feeling lucky '{0}'",
-                Target = "https://www.google.com/search?q={0}&btnI",
-            });
-
-            // find on pc
-            /// see more: http://msdn.microsoft.com/en-us/library/ff684385.aspx
-            commands.Items.Add(new Request()
-            {
-                Pattern = @"(.+)",
-                Title = "Search PC for '{0}'",
-                Target = "search-ms:query={0}&",
-            });
-
-            Save();
         }
 
         public void Load()
         {
-            if (!File.Exists(Common.CommandsFile))
-                saveDefault();
+            string lastItemTried = "";
+
+            // generate default package if missing
+            if (!RepositoryHelper.DefaultPackage.Exists)
+                Save(FactoryPackages.CreateDefaultPackage());
+
+            Items.Clear();
 
             try
             {
-                using (var stream = File.OpenRead(Common.CommandsFile))
+                foreach (var item in RepositoryHelper.Packages)
                 {
-                    commands = new XmlSerializer(typeof(VizrPackage)).Deserialize(stream) as VizrPackage;
+                    lastItemTried = item.GetNameWithoutExtension();
+
+                    using (var stream = File.OpenRead(item.FullName))
+                    {
+                        var package = new XmlSerializer(typeof(VizrPackage)).Deserialize(stream) as VizrPackage;
+                        package.Name = item.GetNameWithoutExtension();
+                        package.Tidy();
+
+                        Items.Add(package.Name, package);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 var message = (ex.InnerException == null) ? ex.Message : ex.InnerException.Message;
 
-                System.Windows.MessageBox.Show("Saved commands could not be loaded. This is not unusual as this software is pre-alpha.\n\n" +
+                System.Windows.MessageBox.Show(string.Format("Package '{0}' could not be loaded. This is not unusual as this software is pre-alpha.\n\n" +
                                                "Try editing the file and opening Vizr again or delete the file to restore default commands.\n\n" +
-                                               "Exception information:\n  " + message, "Vizr",
+                                               "Exception information:\n  {1}", lastItemTried, message),
+                                               "Vizr",
                                                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
 
-                System.Diagnostics.Process.Start("explorer.exe", string.Format("/select,\"{0}\"", Common.CommandsFile));
+                System.Diagnostics.Process.Start("explorer.exe", RepositoryHelper.PackagesPath.FullName);
 
                 Environment.Exit(1);
             }
+
+            // last thing: add meta commands
+            Items.Add(RepositoryHelper.MetaPackageName, FactoryPackages.CreateMetaPackage());
         }
 
         #endregion
 
         public IEnumerable<Command> Query(string text)
         {
-            var results = commands.AllItems.Where(c => c.Match(text));
-
+            var results = Items.Values.SelectMany(p => p.Items).Where(c => c.Match(text));
             return results;
         }
     }

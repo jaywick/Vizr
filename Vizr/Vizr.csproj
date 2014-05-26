@@ -57,9 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FactoryPackages.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="VizrPackage.cs" />
-    <Compile Include="Common.cs" />
+    <Compile Include="RepositoryHelper.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Request.cs" />

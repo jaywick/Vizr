@@ -116,7 +116,7 @@ namespace Vizr
         {
             listResults.Items.Clear();
 
-            foreach (var item in commands.Query(textQuery.Text).Take(5))
+            foreach (var item in commands.Query(textQuery.Text).Take(6))
             {
                 listResults.Items.Add(item);
             }

@@ -11,29 +11,13 @@ namespace Vizr
         public VizrPackage()
         {
             Version = "0.1";
-
             Items = new List<Command>();
-            MetaItems = new List<Command>();
-            addMetaCommands();
         }
 
-        private void addMetaCommands()
+        public VizrPackage(string name)
+            : this()
         {
-            // about app
-            MetaItems.Add(new Command()
-            {
-                Pattern = "About",
-                Title = "About this app",
-                Target = "https://github.com/jaywick/vizr"
-            });
-
-            // edit commands
-            MetaItems.Add(new Command()
-            {
-                Pattern = "Edit",
-                Title = "Edit commands",
-                Target = Common.CommandsFile
-            });
+            this.Name = name;
         }
 
         [XmlAttribute]
@@ -45,14 +29,17 @@ namespace Vizr
         public List<Command> Items { get; set; }
 
         [XmlIgnore]
-        public List<Command> MetaItems { get; set; }
+        public virtual string Name { get; set; }
 
-        [XmlIgnore]
-        public List<Command> AllItems
+        public void Tidy()
         {
-            get
+            foreach (var item in Items)
             {
-                return Items.Union(MetaItems).ToList();
+                if (item is Command)
+                {
+                    if (item.Pattern == "") item.Pattern = item.Title;
+                    if (item.Title == "") item.Title = item.Pattern;
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
@@ -50,6 +51,14 @@ namespace Vizr
         {
             var parts = target.Split(" ").ToList();
             return parts.Exists(word => word.StartsWith(value));
+        }
+
+        public static string GetNameWithoutExtension(this FileInfo target)
+        {
+            if (target.Extension == "")
+                return target.Name;
+
+            return target.Name.Substring(0, target.Name.Length - target.Extension.Length);
         }
     }
 }
