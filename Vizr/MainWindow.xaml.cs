@@ -70,9 +70,19 @@ namespace Vizr
                     listResults.SelectNext();
                     break;
 
-                default:
+                case Key.PageUp:
+                    listResults.SelectFirst();
                     break;
+
+                case Key.PageDown:
+                    listResults.SelectLast();
+                    break;
+
+                default:
+                    return;
             }
+
+            e.Handled = true;
         }
 
         private void Window_Activated(object sender, EventArgs e)
@@ -85,6 +95,11 @@ namespace Vizr
         {
             if (!processTextChange) return;
             updateResults();
+        }
+
+        private void listResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            executeSelected();
         }
 
         private void executeSelected()

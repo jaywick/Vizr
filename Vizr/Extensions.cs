@@ -37,6 +37,12 @@ namespace Vizr
                 target.SelectedIndex = 0;
         }
 
+        public static void SelectLast(this ListBox target)
+        {
+            if (target.Items.Count > 0)
+                target.SelectedIndex = target.Items.Count - 1;
+        }
+
         public static bool IsNullOrEmpty(this string target)
         {
             return target == null || target == "";
