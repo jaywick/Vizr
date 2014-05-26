@@ -58,6 +58,10 @@ namespace Vizr
                     exit();
                     break;
 
+                case Key.Tab:
+                    autoCompleteSelected();
+                    break;
+
                 case Key.Enter:
                     executeSelected();
                     break;
@@ -100,6 +104,17 @@ namespace Vizr
         private void listResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             executeSelected();
+        }
+
+        private void autoCompleteSelected()
+        {
+            var item = (listResults.SelectedItem as Command);
+            
+            if (item == null || item is Request)
+                return;
+
+            textQuery.Text = item.Pattern;
+            textQuery.MoveCursorToEnd();
         }
 
         private void executeSelected()

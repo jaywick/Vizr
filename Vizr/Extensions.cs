@@ -43,6 +43,11 @@ namespace Vizr
                 target.SelectedIndex = target.Items.Count - 1;
         }
 
+        public static void MoveCursorToEnd(this TextBox target)
+        {
+            target.Select(target.Text.Length, 0);
+        }
+
         public static bool IsNullOrEmpty(this string target)
         {
             return target == null || target == "";
