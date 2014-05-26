@@ -45,8 +45,8 @@ namespace Vizr
             {
                 if (item is Command)
                 {
-                    if (item.Pattern == "") item.Pattern = item.Title;
-                    if (item.Title == "") item.Title = item.Pattern;
+                    if (item.Pattern.IsNullOrEmpty()) item.Pattern = item.Title;
+                    if (item.Title.IsNullOrEmpty()) item.Title = item.Pattern;
                 }
             }
         }
