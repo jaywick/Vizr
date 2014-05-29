@@ -27,7 +27,7 @@ namespace Vizr
 
         public override bool Match(string text)
         {
-            return Pattern.ToLower().ContainsWordStartingWith(text.ToLower())
+            return Pattern.ToLower().ContainsPartialsOf(text.ToLower())
                 || Pattern.ToLower().StartsWith(text.ToLower())
                 || Tags.ToLower().Split(",").Any(t => t.StartsWith(text.ToLower()));
         }

@@ -58,10 +58,14 @@ namespace Vizr
             return target.Split(separators, StringSplitOptions.None);
         }
 
-        public static bool ContainsWordStartingWith(this string target, string value)
+        // match start of each word
+        public static bool ContainsPartialsOf(this string target, string value)
         {
-            var parts = target.Split(" ", ".", "-", "_").ToList();
-            return parts.Exists(word => word.StartsWith(value));
+            string[] wordSplitters = { " ", ".", "-", "_" };
+            var targetWords = target.Split(wordSplitters).ToList();
+            var valueWords = value.Split(wordSplitters).ToList();
+
+            return targetWords.Exists(t => valueWords.Exists(v => t.StartsWith(v)));
         }
 
         public static string GetNameWithoutExtension(this FileInfo target)
