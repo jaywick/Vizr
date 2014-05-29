@@ -13,7 +13,11 @@ namespace Vizr
             // defaults
             Enabled = true;
             Admin = false;
+            Tags = "";
         }
+
+        [XmlAttribute]
+        public string Tags { get; set; }
 
         [XmlAttribute]
         public string Application { get; set; }
@@ -24,7 +28,8 @@ namespace Vizr
         public override bool Match(string text)
         {
             return Pattern.ToLower().ContainsWordStartingWith(text.ToLower())
-                || Pattern.ToLower().StartsWith(text.ToLower());
+                || Pattern.ToLower().StartsWith(text.ToLower())
+                || Tags.ToLower().Split(",").Any(t => t.StartsWith(text.ToLower()));
         }
 
         public void Launch(string originalQuery)
