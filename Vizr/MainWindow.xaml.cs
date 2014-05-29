@@ -48,6 +48,7 @@ namespace Vizr
         void Hotkey_Activated()
         {
             this.Show();
+            this.Activate();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
