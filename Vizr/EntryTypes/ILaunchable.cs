@@ -6,9 +6,16 @@ using System.Text;
 
 namespace Vizr
 {
-    class Launcher
+    interface ILaunchable
     {
-        public static bool Execute(string target, string application = null, bool runAsAdmin = false)
+        string Application { get; set; }
+        bool Admin { get; set; }
+        void Launch(string originalQuery);
+    }
+
+    static class ILaunchableMixin
+    {
+        public static bool Execute(this ILaunchable launchable, string target, string application = null, bool runAsAdmin = false)
         {
             try
             {

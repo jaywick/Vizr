@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
+using Vizr;
 
 namespace Vizr
 {
@@ -33,7 +34,7 @@ namespace Vizr
 
         public void Launch(string originalQuery)
         {
-            Launcher.Execute(modifiedArgument, this.Application);
+            this.Execute(modifiedArgument, this.Application);
         }
 
         public override string ToString()

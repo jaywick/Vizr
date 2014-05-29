@@ -59,13 +59,12 @@
     </ApplicationDefinition>
     <Compile Include="Repository\FactoryPackages.cs" />
     <Compile Include="Helpers\HotKey.cs" />
-    <Compile Include="QueryItems\ILaunchable.cs" />
-    <Compile Include="QueryItems\Action.cs" />
+    <Compile Include="EntryTypes\ILaunchable.cs" />
+    <Compile Include="EntryTypes\Action.cs" />
     <Compile Include="Repository\Package.cs" />
     <Compile Include="Repository\RepositoryHelper.cs" />
-    <Compile Include="Helpers\Launcher.cs" />
     <Compile Include="Repository\Repository.cs" />
-    <Compile Include="QueryItems\Request.cs" />
+    <Compile Include="EntryTypes\Request.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -74,7 +73,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="QueryItems\Entry.cs" />
+    <Compile Include="EntryTypes\Entry.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using Vizr;
 
 namespace Vizr
 {
@@ -34,7 +35,7 @@ namespace Vizr
 
         public void Launch(string originalQuery)
         {
-            Launcher.Execute(this.Target, this.Application, this.Admin);
+            this.Execute(this.Target, this.Application, this.Admin);
         }
 
         public override string ToString()
