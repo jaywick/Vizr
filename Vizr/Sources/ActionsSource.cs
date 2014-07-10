@@ -75,7 +75,14 @@ namespace Vizr.Sources
                 }
 
                 if (action.IsAdminRequired)
+                {
                     info.Verb = "runas";
+
+                    if (action.Application.IsNullOrEmpty())
+                    {
+                        info.FileName = "explorer.exe";
+                    }
+                }
 
                 Process.Start(info);
 
