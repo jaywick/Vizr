@@ -57,14 +57,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Repository\FactoryPackages.cs" />
+    <Compile Include="IEntryHandler.cs" />
+    <Compile Include="Sources\ActionsSource.cs" />
+    <Compile Include="SourceBase.cs" />
+    <Compile Include="Sources\KeywordsSource.cs" />
     <Compile Include="Helpers\HotKey.cs" />
-    <Compile Include="EntryTypes\ILaunchable.cs" />
     <Compile Include="EntryTypes\Action.cs" />
-    <Compile Include="Repository\Package.cs" />
-    <Compile Include="Repository\RepositoryHelper.cs" />
-    <Compile Include="Repository\Repository.cs" />
-    <Compile Include="EntryTypes\Request.cs" />
+    <Compile Include="Helpers\Workspace.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="Data\IEntryModel.cs" />
+    <Compile Include="Data\UserActionsXml.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,6 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repository\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

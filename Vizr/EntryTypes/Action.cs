@@ -7,36 +7,26 @@ using Vizr;
 
 namespace Vizr
 {
-    public class Action : Entry, ILaunchable
+    public class Action : EntryBase
     {
         public Action()
         {
             // defaults
-            Enabled = true;
-            Admin = false;
-            Tags = "";
+            this.IsEnabled = true;
+            this.Title = "";
+            this.Tags = "";
+            this.Application = "";
+            this.Target = "";
+            this.IsAdminRequired = false;
         }
 
-        [XmlAttribute]
         public string Tags { get; set; }
 
-        [XmlAttribute]
         public string Application { get; set; }
 
-        [XmlAttribute]
-        public bool Admin { get; set; }
+        public bool IsAdminRequired { get; set; }
 
-        public override bool Match(string text)
-        {
-            return Pattern.ToLower().ContainsPartialsOf(text.ToLower())
-                || Pattern.ToLower().StartsWith(text.ToLower())
-                || Tags.ToLower().Split(",").Any(t => t.StartsWith(text.ToLower()));
-        }
-
-        public void Launch(string originalQuery)
-        {
-            this.Execute(this.Target, this.Application, this.Admin);
-        }
+        public string Target { get; set; }
 
         public override string ToString()
         {

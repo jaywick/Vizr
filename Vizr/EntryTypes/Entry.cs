@@ -6,53 +6,27 @@ using System.Xml.Serialization;
 
 namespace Vizr
 {
-    public class Entry
+    public class EntryBase
     {
-        private string title = "";
-        private string pattern = "";
-
-        public Entry()
+        public EntryBase()
         {
             // defaults
-            Enabled = true;
+            IsEnabled = true;
         }
 
-        [XmlAttribute]
-        public string Title
+        public SourceBase ParentSource { get; set; }
+        public int Relevance { get; set; }
+        public string Title { get; set; }
+        public bool IsEnabled { get; set; }
+
+        public string HandlePreview()
         {
-            get { return chooseValid(title, pattern); }
-            set { title = value; }
+            return ParentSource.Handler.Preview(this);
         }
 
-        [XmlAttribute]
-        public virtual string Pattern
+        public ExecutionResult HandleExecute()
         {
-            get { return chooseValid(pattern, title); }
-            set { pattern = value; }
-        }
-
-        private string chooseValid(string subject, string other)
-        {
-            if (subject.IsNullOrEmpty() && other.IsNullOrEmpty())
-                return "";
-            else if (!subject.IsNullOrEmpty())
-                return subject;
-            else if (!other.IsNullOrEmpty())
-                return other;
-
-            return null;
-        }
-
-        [XmlAttribute]
-        public bool Enabled { get; set; }
-
-        [XmlText]
-        public string Target { get; set; }
-
-        public virtual bool Match(string text)
-        {
-            // primitive matching by default
-            return Pattern == text;
+            return ParentSource.Handler.Execute(this);
         }
 
         public override string ToString()

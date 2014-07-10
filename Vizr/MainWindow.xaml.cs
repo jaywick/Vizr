@@ -17,15 +17,16 @@ namespace Vizr
 {
     public partial class MainWindow : Window
     {
-        private bool processTextChange = false; // flag to prevent textchange events if false
-        HotKey hotkey;
-        private Repository commands = new Repository();
+        private Repository repository = new Repository();
+        private HotKey hotkey;
+        private bool ignoreChanges;
 
         public MainWindow()
         {
+            ignoreChanges = true;
             InitializeComponent();
+            ignoreChanges = false;
 
-            processTextChange = true;
             textQuery.Text = "";
 
             if (StartupOptions.IsBackgroundStart)
@@ -44,6 +45,56 @@ namespace Vizr
             hotkey = new HotKey(Key.Space, KeyModifier.Alt);
             hotkey.Activated += Hotkey_Activated;
         }
+
+        private EntryBase selectedEntry
+        {
+            get { return listResults.SelectedItem as EntryBase; }
+        }
+
+        private void autoCompleteSelected()
+        {
+            if (selectedEntry == null)
+                return;
+
+            textQuery.Text = selectedEntry.HandlePreview();
+            textQuery.MoveCursorToEnd();
+        }
+
+        private void executeSelected()
+        {
+            if (selectedEntry == null)
+                return;
+
+            var result = selectedEntry.HandleExecute();
+            if (result == ExecutionResult.Failed)
+                playSubtleErrorSound();
+
+            exit();
+        }
+
+        private void playSubtleErrorSound()
+        {
+            System.Media.SystemSounds.Beep.Play();
+        }
+
+        private void exit()
+        {
+            textQuery.Clear();
+
+            if (StartupOptions.IsBackgroundStart)
+                this.Hide();
+            else
+                this.Close();
+        }
+
+        private void updateResults()
+        {
+            listResults.ItemsSource = repository.Query(textQuery.Text).Take(6);
+            listResults.SelectFirst();
+        }
+
+        #region Event Handlers
+
 
         void Hotkey_Activated()
         {
@@ -92,14 +143,14 @@ namespace Vizr
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            commands.Load();
+            repository.Update();
             textQuery.Focus();
         }
 
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!processTextChange) return;
-            updateResults();
+            if (!ignoreChanges)
+                updateResults();
         }
 
         private void listResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -107,52 +158,6 @@ namespace Vizr
             executeSelected();
         }
 
-        private void autoCompleteSelected()
-        {
-            var item = (listResults.SelectedItem as Entry);
-            
-            if (item == null || item is Request)
-                return;
-
-            textQuery.Text = item.Pattern;
-            textQuery.MoveCursorToEnd();
-        }
-
-        private void executeSelected()
-        {
-            var item = (listResults.SelectedItem as Entry);
-
-            if (item != null)
-            {
-                (item as ILaunchable).Launch(textQuery.Text);
-                exit();
-            }
-            else
-            {
-                System.Media.SystemSounds.Beep.Play();
-            }
-        }
-
-        private void exit()
-        {
-            textQuery.Clear();
-
-            if (StartupOptions.IsBackgroundStart)
-                this.Hide();
-            else
-                this.Close();
-        }
-
-        private void updateResults()
-        {
-            listResults.Items.Clear();
-
-            foreach (var item in commands.Query(textQuery.Text).Take(6))
-            {
-                listResults.Items.Add(item);
-            }
-
-            listResults.SelectFirst();
-        }
+        #endregion
     }
 }

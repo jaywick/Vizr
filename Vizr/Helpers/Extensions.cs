@@ -75,5 +75,13 @@ namespace Vizr
 
             return target.Name.Substring(0, target.Name.Length - target.Extension.Length);
         }
+
+        public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
+        {
+            foreach (T item in enumeration)
+            {
+                action(item);
+            }
+        }
     }
 }
