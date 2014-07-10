@@ -17,7 +17,7 @@ namespace Vizr
 
         public abstract void Update();
         public abstract void Query(string text);
-
+        
         protected SourceBase()
         {
             Enabled = true;
@@ -26,6 +26,9 @@ namespace Vizr
 
         public virtual void Start()
         {
+            if (Handler == null)
+                throw new Exception("Entry Handler was not set for " + this.GetType().Name);
+
             Update();
         }
     }

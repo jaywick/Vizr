@@ -12,6 +12,12 @@ namespace Vizr.Sources
     {
         private List<FileInfo> items;
 
+        public StartMenuAppsSource()
+            : base()
+        {
+            Handler = new ActionsHandler();
+        }
+
         public override void Update()
         {
             var myApps = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu))
@@ -39,6 +45,7 @@ namespace Vizr.Sources
                     {
                         Title = item.GetNameWithoutExtension(),
                         Target = item.FullName,
+                        ParentSource = this,
                     });
                 }
             }
