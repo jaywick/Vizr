@@ -6,36 +6,38 @@ A Modern and humble quick launcher for Windows
 ![Searching 'labs' in Vizr](Preview.png)
 
 ## Pre-alpha notes
-* Commands are stored in
+Currently Vizr is going major architectural changes.
+This is a public alpha-preview so the schema and interfaces will be guaranteed to change.
 
-		%APPDATA%\Jay Wick Labs\Vizr\Packages
+**Do not rely on your user commands or plugins at this time!**
 
-* The *schema is not finalised* and is **guaranteed to change** during pre-alpha and crash
+### Terminology
 
-## Schema
-The current build supports the following template
-
-```xml
-<VizrPackage Version="0.1">
-	<Items>
-		<Action Title="Visit Jay Wick Labs">http://labs.jay-wick.com</Action>
-		<Request Title="Search IMDB for '{0}'" Pattern="imdb (.+)">http://www.imdb.com/find?q={0}</Request>
-		<Request Title="Google for '{0}'" Pattern="(.+)">https://www.google.com/search?q={0}</Request>
-		<Request Title="I'm feeling lucky '{0}'" Pattern="(.+)">https://www.google.com/search?q={0}&amp;btnI</Request>
-		<Request Title="Search PC for '{0}'" Pattern="(.+)">search-ms:query={0}&amp;</Request>
-	</Items>
-</VizrPackage>
-```
-
-## Terms
 | Term | Description |
 |------|-------------|
-| Package | A list of entries |
 | Entry | An item that appears in the list of results |
-| Action | An instruction like 'run this file' |
-| Request | An instruction involving an argument such as 'define <word>' |
-| Pattern | Text to match an entry _(for requests it can include regular expressions)_ |
-| Launchable | an entry that can launch something _(e.g. webpage, file)_ |
-| `{0}` | the placeholder for the argument |
+| Action | An entry which is a file or program that can be launched |
+| Requests | Like actions but with arguments ** - no longer supported** |
 
-![Entry and related classes](ClassDiagram.png)
+## Search results
+
+### Actions
+A custom list of actions (files or programs that can be launched) is searched with from the following path
+
+    %APPDATA%\Jay Wick Labs\Vizr\actions.xml
+
+The schema for this file is
+
+```xml
+<actions>
+	<items>
+		<action title="Visit Jay Wick Labs">http://labs.jay-wick.com</action>
+		<action title="Windows Explorer" tags="folders,browse">c:\windows\explorer.exe</action>
+		<action title="Run console as admin" runElevated="true">c:\windows\system32\cmd.exe</action>
+	</items>
+</actions>
+```
+
+### StartMenu
+
+All links in both the common and user start menus are shown. Excludes anything with term `"uninstal"` in the name.
