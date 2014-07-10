@@ -18,6 +18,7 @@ namespace Vizr
             Sources = new List<SourceBase>
             {
                 new Sources.ActionsSource(),
+                new Sources.StartMenuAppsSource(),
             };
 
             Sources.ForEach(s => s.Start());

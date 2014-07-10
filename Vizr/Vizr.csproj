@@ -60,13 +60,13 @@
     <Compile Include="IEntryHandler.cs" />
     <Compile Include="Sources\ActionsSource.cs" />
     <Compile Include="SourceBase.cs" />
-    <Compile Include="Sources\KeywordsSource.cs" />
     <Compile Include="Helpers\HotKey.cs" />
     <Compile Include="EntryTypes\Action.cs" />
     <Compile Include="Helpers\Workspace.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Data\IEntryModel.cs" />
     <Compile Include="Data\UserActionsXml.cs" />
+    <Compile Include="Sources\StartMenuAppsSource.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
