@@ -31,11 +31,8 @@ namespace Vizr.Sources
                 return;
             }
 
-            using (var stream = actionsFile.OpenRead())
-            {
-                var actionsListXml = new XmlSerializer(typeof(UserActionListXml)).Deserialize(stream) as UserActionListXml;
-                actions = actionsListXml.GetAllEntries();
-            }
+            var actionsListXml = XmlRealizer.Realize<UserActionListXml>(actionsFile);
+            actions = actionsListXml.GetAllEntries();
 
             actions.ForEach(a => a.ParentSource = this);
         }
