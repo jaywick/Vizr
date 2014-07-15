@@ -14,6 +14,7 @@ namespace Vizr
         public string Name { get; protected set; }
         public IEnumerable<EntryBase> Results { get; protected set; }
         public IEntryHandler Handler { get; protected set; }
+        public EntryDecoration Decoration { get; protected set; }
 
         public abstract void Update();
         public abstract void Query(string text);

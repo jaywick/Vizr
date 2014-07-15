@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\XmlRealizer.cs" />
+    <Compile Include="EntryDecoration.cs" />
     <Compile Include="IEntryHandler.cs" />
     <Compile Include="Sources\ActionsSource.cs" />
     <Compile Include="SourceBase.cs" />
@@ -110,9 +111,7 @@
   <ItemGroup>
     <Resource Include="app.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repository\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,7 +9,7 @@
             <Border CornerRadius="5" Background="#F5F5F5" Margin="10,10,10,255">
                 <TextBox TabIndex="0" x:Name="textQuery" TextWrapping="Wrap" Text="search" FontSize="36" DockPanel.Dock="Top" Padding="5,1" Background="{x:Null}" Foreground="#FF5B5B5B" Style="{DynamicResource VizrTextBoxStyle}" TextChanged="textQuery_TextChanged"/>
             </Border>
-            <ListBox TabIndex="1" x:Name="listResults" Height="239" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="26" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Style="{DynamicResource VizrListBoxStyle}" ItemContainerStyle="{DynamicResource VizrListBoxItemStyle}" Background="#E5FFFFFF" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listResults_MouseDoubleClick"/>
+            <ListBox TabIndex="1" x:Name="listResults" Height="239" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="26" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Style="{DynamicResource VizrListBoxStyle}" ItemContainerStyle="{DynamicResource VizrListBoxItemStyle}" Background="#E5FFFFFF" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listResults_MouseDoubleClick" ItemTemplate="{DynamicResource EntryTemplate}"/>
         </Grid>
     </Border>
 </Window>
