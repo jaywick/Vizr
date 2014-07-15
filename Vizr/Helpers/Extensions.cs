@@ -83,5 +83,11 @@ namespace Vizr
                 action(item);
             }
         }
+
+        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> items, Func<T, TKey> keySelector)
+        {
+            return items.GroupBy(keySelector)
+                        .Select(x => x.First());
+        }
     }
 }

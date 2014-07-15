@@ -16,19 +16,19 @@ namespace Vizr.Sources
             : base()
         {
             Handler = new ActionsHandler();
+            Decoration = new EntryDecoration("#6a9fb5");
         }
 
         public override void Update()
         {
-            var myApps = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu))
-                .GetFiles("*.lnk", SearchOption.AllDirectories);
+            var files = new List<FileInfo>();
 
-            var allApps = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu))
-                .GetFiles("*.lnk", SearchOption.AllDirectories);
+            files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu)).GetFiles("*.lnk"));
+            files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)).GetFiles("*.lnk"));
 
-            items = myApps
-                .Union((allApps))
+            items = files
                 .Where(a => !a.Name.ToLower().Contains("uninstal"))
+                .Distinct(a => a.FullName)
                 .OrderBy(a => a.Name)
                 .ToList();
         }
