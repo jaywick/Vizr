@@ -23,8 +23,8 @@ namespace Vizr.Sources
         {
             var files = new List<FileInfo>();
 
-            files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu)).GetFiles("*.lnk"));
-            files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)).GetFiles("*.lnk"));
+            files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu)).GetFiles("*.lnk", SearchOption.AllDirectories));
+            files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)).GetFiles("*.lnk", SearchOption.AllDirectories));
 
             items = files
                 .Where(a => !a.Name.ToLower().Contains("uninstal"))
