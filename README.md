@@ -1,7 +1,7 @@
 Vizr
 ====
 
-A Modern and humble quick launcher for Windows
+A modern and humble quick launcher for Windows
 
 ![Searching 'labs' in Vizr](Preview.png)
 
