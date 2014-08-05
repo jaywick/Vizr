@@ -17,8 +17,10 @@ namespace Vizr
 
         public static TModel Realize<TModel>(FileInfo file) where TModel : class
         {
-            TModel dataObject;
+            if (!file.Exists)
+                return Activator.CreateInstance<TModel>();
 
+            TModel dataObject;
             using (var stream = file.OpenRead())
             {
                 try

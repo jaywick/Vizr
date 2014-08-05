@@ -4,18 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Vizr
+namespace Vizr.Models
 {
     [XmlType("actions")]
     public class UserActionListXml : IEntryModelList
     {
         public UserActionListXml()
         {
-        }
-
-        public UserActionListXml(List<UserActionXml> items)
-        {
-            this.Items = items;
+            this.Items = new List<UserActionXml>();
         }
 
         [XmlArray("items")]
@@ -31,17 +27,12 @@ namespace Vizr
     public class UserActionXml : IEntryModel
     {
         public UserActionXml()
-            : this("")
         {
-        }
-
-        public UserActionXml(string title, string tags = "", string application = "", bool isAdminRequired = false, string target = "")
-        {
-            Title = title;
-            Tags = tags;
-            Application = application;
-            IsAdminRequired = isAdminRequired;
-            Target = target;
+            Title = "";
+            Tags = "";
+            Application = "";
+            IsAdminRequired = false;
+            Target = "";
         }
 
         [XmlAttribute("title")]

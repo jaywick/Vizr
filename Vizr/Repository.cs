@@ -19,6 +19,7 @@ namespace Vizr
             {
                 new Sources.ActionsSource(),
                 new Sources.StartMenuAppsSource(),
+                new Sources.FileSystemSearch(),
             };
 
             Sources.ForEach(s => s.Start());
