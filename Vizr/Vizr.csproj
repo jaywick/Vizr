@@ -61,14 +61,14 @@
     <Compile Include="Data\XmlRealizer.cs" />
     <Compile Include="EntryDecoration.cs" />
     <Compile Include="IEntryHandler.cs" />
-    <Compile Include="Sources\UserActionsSource.cs" />
+    <Compile Include="Sources\ActionsSource.cs" />
     <Compile Include="SourceBase.cs" />
     <Compile Include="Helpers\HotKey.cs" />
-    <Compile Include="EntryTypes\Action.cs" />
+    <Compile Include="EntryTypes\ActionEntry.cs" />
     <Compile Include="Helpers\Workspace.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="Data\IEntryModel.cs" />
-    <Compile Include="Data\UserActions.cs" />
+    <Compile Include="Data\Actions.cs" />
     <Compile Include="Sources\FileSystemSearchSource.cs" />
     <Compile Include="Sources\StartMenuAppsSource.cs" />
     <Page Include="MainWindow.xaml">
@@ -79,7 +79,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EntryTypes\Entry.cs" />
+    <Compile Include="EntryTypes\EntryBase.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

@@ -56,10 +56,10 @@ namespace Vizr.Sources
 
         public override void Query(string text)
         {
-            var results = new List<Action>();
+            var results = new List<ActionEntry>();
 
             var matches = items.Where(x => x.Name.ToLower().ContainsPartialsOf(text.ToLower()));
-            results = matches.Select(m => new Action()
+            results = matches.Select(m => new ActionEntry()
             {
                 Title = getTitle(m),
                 Target = m.FullName,

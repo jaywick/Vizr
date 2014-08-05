@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,15 +7,15 @@ using System.Xml.Serialization;
 namespace Vizr.Models
 {
     [XmlType("actions")]
-    public class UserActionListXml : IEntryModelList
+    public class ActionsList : IEntryModelList
     {
-        public UserActionListXml()
+        public ActionsList()
         {
-            this.Items = new List<UserActionXml>();
+            this.Items = new List<Action>();
         }
 
         [XmlArray("items")]
-        public virtual List<UserActionXml> Items { get; set; }
+        public virtual List<Action> Items { get; set; }
 
         public List<EntryBase> GetAllEntries()
         {
@@ -24,9 +24,9 @@ namespace Vizr.Models
     }
 
     [XmlType("action")]
-    public class UserActionXml : IEntryModel
+    public class Action : IEntryModel
     {
-        public UserActionXml()
+        public Action()
         {
             Title = "";
             Tags = "";
@@ -55,7 +55,7 @@ namespace Vizr.Models
 
         public EntryBase ToEntry()
         {
-            return new Action()
+            return new ActionEntry()
             {
                 Application = this.Application,
                 IsAdminRequired = this.IsAdminRequired,

@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Vizr.Models;
 
 namespace Vizr.Sources
 {
     public class ActionsSource : SourceBase
     {
-        private readonly string ActionsFileName = "actions.xml";
+        private readonly string ActionsFileName = "Actions.xml";
 
         private List<EntryBase> actions;
 
@@ -31,7 +32,7 @@ namespace Vizr.Sources
                 return;
             }
 
-            var actionsListXml = XmlRealizer.Realize<UserActionListXml>(actionsFile);
+            var actionsListXml = XmlRealizer.Realize<ActionsList>(actionsFile);
             actions = actionsListXml.GetAllEntries();
 
             actions.ForEach(a => a.ParentSource = this);
@@ -39,10 +40,10 @@ namespace Vizr.Sources
 
         public override void Query(string text)
         {
-            Results = actions.Where(a => match(a as Action, text));
+            Results = actions.Where(a => match(a as ActionEntry, text));
         }
 
-        private bool match(Action action, string text)
+        private bool match(ActionEntry action, string text)
         {
             return action.Title.ToLower().ContainsPartialsOf(text.ToLower())
                 || action.Title.ToLower().StartsWith(text.ToLower())
@@ -59,7 +60,7 @@ namespace Vizr.Sources
 
         public ExecutionResult Execute(EntryBase entry)
         {
-            var action = entry as Action;
+            var action = entry as ActionEntry;
 
             try
             {

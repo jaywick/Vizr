@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +7,9 @@ using Vizr;
 
 namespace Vizr
 {
-    public class Action : EntryBase
+    public class ActionEntry : EntryBase
     {
-        public Action()
+        public ActionEntry()
         {
             // defaults
             this.IsEnabled = true;
