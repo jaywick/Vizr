@@ -147,6 +147,14 @@ namespace Vizr
             textQuery.Focus();
         }
 
+        private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (e.Delta > 0)
+                listResults.SelectPrevious();
+            else
+                listResults.SelectNext();
+        }
+
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!ignoreChanges)
