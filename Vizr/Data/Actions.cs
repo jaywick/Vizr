@@ -17,9 +17,9 @@ namespace Vizr.Models
         [XmlArray("items")]
         public virtual List<Action> Items { get; set; }
 
-        public List<EntryBase> GetAllEntries()
+        public List<TEntry> GetAllEntries<TEntry>() where TEntry : EntryBase
         {
-            return Items.Select(a => a.ToEntry()).ToList();
+            return Items.Select(a => a.ToEntry<TEntry>()).ToList();
         }
     }
 
@@ -53,7 +53,7 @@ namespace Vizr.Models
         [XmlText]
         public string Target { get; set; }
 
-        public EntryBase ToEntry()
+        public TEntry ToEntry<TEntry>() where TEntry : EntryBase
         {
             return new ActionEntry()
             {
@@ -63,7 +63,7 @@ namespace Vizr.Models
                 Tags = this.Tags,
                 Target = this.Target,
                 Title = this.Title,
-            };
+            } as TEntry;
         }
     }
 }

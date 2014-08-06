@@ -58,13 +58,21 @@ namespace Vizr.Sources
         {
             var results = new List<ActionEntry>();
 
-            var matches = items.Where(x => x.Name.ToLower().ContainsPartialsOf(text.ToLower()));
-            results = matches.Select(m => new ActionEntry()
+            foreach (var item in items)
             {
-                Title = getTitle(m),
-                Target = m.FullName,
-                ParentSource = this,
-            }).ToList();
+                var score = TextCompare.Score(text, item.Name);
+
+                if (score > 0)
+                {
+                    results.Add(new ActionEntry
+                    {
+                        Title = getTitle(item),
+                        Target = item.FullName,
+                        ParentSource = this,
+                        Relevance = score,
+                    });
+                }
+            }
 
             Results = results;
         }

@@ -32,13 +32,14 @@ namespace Vizr
             Sources.ForEach(s => s.Update());
         }
 
-        public IEnumerable<EntryBase> Query(string text)
+        public IEnumerable<EntryBase> QueryAll(string text)
         {
             Sources.ForEach(s => s.Query(text));
-            
+
             return Sources.Where(s => s.Enabled)
                           .OrderBy(s => s.Priority)
                           .SelectMany(s => s.Results)
+                          .Where(r => r.Relevance > 0)
                           .OrderByDescending(r => r.Relevance);
         }
     }

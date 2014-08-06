@@ -60,6 +60,7 @@
     <Compile Include="Data\FileSystemSearchRules.cs" />
     <Compile Include="Data\XmlRealizer.cs" />
     <Compile Include="EntryDecoration.cs" />
+    <Compile Include="Helpers\TextCompare.cs" />
     <Compile Include="IEntryHandler.cs" />
     <Compile Include="Sources\ActionsSource.cs" />
     <Compile Include="SourceBase.cs" />

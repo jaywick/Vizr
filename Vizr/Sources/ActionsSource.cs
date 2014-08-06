@@ -14,8 +14,8 @@ namespace Vizr.Sources
     {
         private readonly string ActionsFileName = "Actions.xml";
 
-        private List<EntryBase> actions;
-
+        private List<ActionEntry> actions;
+        
         public ActionsSource()
             : base()
         {
@@ -28,26 +28,24 @@ namespace Vizr.Sources
 
             if (!actionsFile.Exists)
             {
-                actions = new List<EntryBase>();
+                actions = new List<ActionEntry>();
                 return;
             }
-
+            
             var actionsListXml = XmlRealizer.Realize<ActionsList>(actionsFile);
-            actions = actionsListXml.GetAllEntries();
+            actions = actionsListXml.GetAllEntries<ActionEntry>();
 
             actions.ForEach(a => a.ParentSource = this);
         }
 
         public override void Query(string text)
         {
-            Results = actions.Where(a => match(a as ActionEntry, text));
-        }
+            foreach (var action in actions)
+            {
+                action.Relevance = TextCompare.Score(text, action.Title, action.Tags);
+            }
 
-        private bool match(ActionEntry action, string text)
-        {
-            return action.Title.ToLower().ContainsPartialsOf(text.ToLower())
-                || action.Title.ToLower().StartsWith(text.ToLower())
-                || action.Tags.ToLower().Split(",").Any(t => t.StartsWith(text.ToLower()));
+            Results = actions;
         }
     }
 

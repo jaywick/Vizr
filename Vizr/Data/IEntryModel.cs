@@ -7,11 +7,11 @@ namespace Vizr
 {
     interface IEntryModel
     {
-        EntryBase ToEntry();
+        TEntry ToEntry<TEntry>() where TEntry : EntryBase;
     }
 
     interface IEntryModelList
     {
-        List<EntryBase> GetAllEntries();
+        List<TEntry> GetAllEntries<TEntry>() where TEntry : EntryBase;
     }
 }

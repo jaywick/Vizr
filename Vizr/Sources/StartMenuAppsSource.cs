@@ -25,7 +25,7 @@ namespace Vizr.Sources
 
             files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu)).GetFiles("*.lnk", SearchOption.AllDirectories));
             files.AddRange(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.CommonStartMenu)).GetFiles("*.lnk", SearchOption.AllDirectories));
-            
+
             items = files
                 .Where(a => !a.Name.ToLower().Contains("uninstal"))
                 .Distinct(a => a.FullName)
@@ -39,13 +39,16 @@ namespace Vizr.Sources
 
             foreach (var item in items)
             {
-                if (item.Name.ToLower().ContainsPartialsOf(text.ToLower()))
+                var score = TextCompare.Score(text, item.Name);
+
+                if (score > 0)
                 {
-                    results.Add(new ActionEntry()
+                    results.Add(new ActionEntry
                     {
                         Title = item.GetNameWithoutExtension(),
                         Target = item.FullName,
                         ParentSource = this,
+                        Relevance = score,
                     });
                 }
             }
