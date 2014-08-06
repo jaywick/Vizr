@@ -62,8 +62,8 @@ namespace Vizr
         public static bool ContainsPartialsOf(this string target, string value)
         {
             string[] wordSplitters = { " ", ".", "-", "_" };
-            var targetWords = target.Split(wordSplitters).ToList();
-            var valueWords = value.Split(wordSplitters).ToList();
+            var targetWords = target.Split(wordSplitters, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var valueWords = value.Split(wordSplitters, StringSplitOptions.RemoveEmptyEntries).ToList();
 
             return targetWords.Exists(t => valueWords.Exists(v => t.StartsWith(v)));
         }

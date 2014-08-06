@@ -22,13 +22,18 @@ namespace Vizr
 
         public static int Score(string input, string existing)
         {
-            return Criteria.Where(c => c.Comparison(existing.ToLower(), input.ToLower()))
+            var normalisedInput = input.ToLower().Trim();
+            var normalisedExisting = existing.ToLower().Trim();
+
+            return Criteria.Where(c => c.Comparison(normalisedInput, normalisedExisting))
                            .Sum(c => c.Score);
         }
 
         public static int Score(string input, params string[] existing)
         {
-            return existing.Select(e => Score(input, e)).Sum();
+            return existing.Where(e => !e.IsNullOrEmpty())
+                           .Select(e => Score(input, e))
+                           .Sum();
         }
 
         public class Criterion
