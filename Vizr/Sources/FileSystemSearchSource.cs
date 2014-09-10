@@ -47,6 +47,9 @@ namespace Vizr.Sources
             if (searchRule.SearchType.HasFlag(FileSearchTargets.Folders))
                 items.AddRange(directory.GetDirectories(searchRule.Pattern, recurse));
 
+            if (searchRule.IncludeRuleFolder)
+                items.Add(directory);
+
             return items;
         }
 

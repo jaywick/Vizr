@@ -50,6 +50,9 @@ namespace Vizr.Models
         [XmlAttribute("searchtype")]
         public FileSearchTargets SearchType { get; set; }
 
+        [XmlAttribute("includeThis")]
+        public bool IncludeRuleFolder { get; set; }
+
         [XmlText]
         public string Path { get; set; }
     }
