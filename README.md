@@ -1,5 +1,6 @@
 Vizr
 ====
+[![Build status](https://ci.appveyor.com/api/projects/status/8i7c3tkteys1aq59?svg=true)](https://ci.appveyor.com/project/jaywick/vizr)
 
 A modern and humble quick launcher for Windows
 
