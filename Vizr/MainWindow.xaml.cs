@@ -89,7 +89,7 @@ namespace Vizr
 
         private void updateResults()
         {
-            listResults.ItemsSource = repository.QueryAll(textQuery.Text).Take(6);
+            listResults.ItemsSource = repository.QueryAll(textQuery.Text).Take(7);
             listResults.SelectFirst();
         }
 
