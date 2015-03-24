@@ -11,7 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vizr;
+using Vizr.API;
+using Vizr.Extensions;
 
 namespace Vizr
 {
@@ -30,7 +31,14 @@ namespace Vizr
             textQuery.Text = "";
 
             if (StartupOptions.IsBackgroundStart)
+            {
                 backgroundStart();
+                repository.OnBackgroundStart();
+            }
+            else
+            {
+                repository.OnAppStart();
+            }
         }
 
         ~MainWindow()
@@ -46,9 +54,9 @@ namespace Vizr
             hotkey.Activated += Hotkey_Activated;
         }
 
-        private EntryBase selectedEntry
+        private IResult selectedEntry
         {
-            get { return listResults.SelectedItem as EntryBase; }
+            get { return (IResult)listResults.SelectedItem; }
         }
 
         private void autoCompleteSelected()
@@ -56,7 +64,7 @@ namespace Vizr
             if (selectedEntry == null)
                 return;
 
-            textQuery.Text = selectedEntry.HandlePreview();
+            //textQuery.Text = selectedEntry.HandlePreview();
             textQuery.MoveCursorToEnd();
         }
 
@@ -65,9 +73,9 @@ namespace Vizr
             if (selectedEntry == null)
                 return;
 
-            var result = selectedEntry.HandleExecute();
-            if (result == ExecutionResult.Failed)
-                playSubtleErrorSound();
+            //var result = selectedEntry.HandleExecute();
+            //if (result == ExecutionResult.Failed)
+            //    playSubtleErrorSound();
 
             exit();
         }
@@ -82,14 +90,19 @@ namespace Vizr
             textQuery.Clear();
 
             if (StartupOptions.IsBackgroundStart)
+            {
                 this.Hide();
+                repository.OnAppHide();
+            }
             else
+            {
                 this.Close();
+            }
         }
 
         private void updateResults()
         {
-            listResults.ItemsSource = repository.QueryAll(textQuery.Text).Take(7);
+            listResults.ItemsSource = repository.Process(textQuery.Text).Take(7);
             listResults.SelectFirst();
         }
 
@@ -100,6 +113,8 @@ namespace Vizr
         {
             this.Show();
             this.Activate();
+
+            repository.OnAppStart();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -143,7 +158,6 @@ namespace Vizr
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            repository.Update();
             textQuery.Focus();
         }
 

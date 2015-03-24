@@ -6,41 +6,46 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Vizr.API;
 
 namespace Vizr
 {
     public class Repository
     {
-        private List<SourceBase> Sources;
+        private List<IResultProvider> Providers { get; set; }
+        private IResultScorer Scorer { get; set; }
 
         public Repository()
         {
-            Sources = new List<SourceBase>
-            {
-                new Sources.ActionsSource(),
-                new Sources.StartMenuAppsSource(),
-                new Sources.FileSystemSearch(),
-            };
+            //todo: auto load IResultProvider
+            Providers = new List<IResultProvider>();
+            Providers.Add(new StandardProviders.StartMenuProvider());
 
-            Sources.ForEach(s => s.Start());
-
-            Update();
+            Scorer = new GenericScorer();
         }
 
-        public void Update()
+        public IEnumerable<ScoredResult> Process(string text)
         {
-            Sources.ForEach(s => s.Update());
+            var results = Providers
+                .SelectMany(x => x.Query(text));
+
+            return Scorer.Score(results)
+                .OrderByDescending(x => x.Score);
         }
 
-        public IEnumerable<EntryBase> QueryAll(string text)
+        public void OnAppStart()
         {
-            Sources.ForEach(s => s.Query(text));
+            Providers.ForEach(x => x.OnAppStart());
+        }
 
-            return Sources.Where(s => s.Enabled)
-                          .OrderBy(s => s.Priority)
-                          .SelectMany(s => s.Results)
-                          .Where(r => r.Relevance > 0)
-                          .OrderByDescending(r => r.Relevance);
+        public void OnAppHide()
+        {
+            Providers.ForEach(x => x.OnAppHide());
+        }
+
+        public void OnBackgroundStart()
+        {
+            Providers.ForEach(x => x.OnBackgroundStart());
         }
     }
 }
