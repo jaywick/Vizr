@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Vizr.API
 {
-    static class Workspace
+    public static class Workspace
     {
         public static DirectoryInfo SourcesPath { get; private set; }
 

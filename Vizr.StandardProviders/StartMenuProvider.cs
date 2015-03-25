@@ -9,7 +9,7 @@ using Vizr.StandardProviders.Extensions;
 
 namespace Vizr.StandardProviders
 {
-    public class StartMenuProvider : API.IResultProvider
+    public class StartMenuProvider : API.IResultProvider, API.IHasPreferences<StartMenuProviderPrefs>
     {
         private static string ShortcutFilePattern = "*.lnk";
 
@@ -22,6 +22,8 @@ namespace Vizr.StandardProviders
         public string UniqueName { get; set; }
 
         public IEnumerable<IResult> Items { get; set; }
+
+        public StartMenuProviderPrefs Preferences { get; set; }
 
         public void OnBackgroundStart()
         {
@@ -57,9 +59,9 @@ namespace Vizr.StandardProviders
             files.AddRange(userStartMenu.EnumerateFiles(ShortcutFilePattern, SearchOption.AllDirectories));
             files.AddRange(commonStartMenu.EnumerateFiles(ShortcutFilePattern, SearchOption.AllDirectories));
 
-            if (AdditionalSearchFolders != null)
+            if (Preferences.AdditionalSearchFolders != null)
             {
-                foreach (var folder in AdditionalSearchFolders)
+                foreach (var folder in Preferences.AdditionalSearchFolders)
                 {
                     files.AddRange(folder.EnumerateFiles(ShortcutFilePattern, SearchOption.AllDirectories));
                 }
@@ -73,25 +75,25 @@ namespace Vizr.StandardProviders
         {
             var filtered = new List<FileInfo>(files);
 
-            if (IgnoreDuplicates)
+            if (Preferences.IgnoreDuplicates)
                 filtered = filtered
                     .DistinctBy(x => x.FullName)
                     .ToList();
 
-            if (IgnoreUninstallers)
+            if (Preferences.IgnoreUninstallers)
                 filtered.RemoveAll(x => x.Name.ToLower().Contains("uninstal"));
 
-            if (IgnoredItems != null && IgnoredItems.Any())
-                filtered.RemoveAll(x => IgnoredItems.Any(ignored => ignored.FullName == x.FullName));
+            if (Preferences.IgnoredItems != null && Preferences.IgnoredItems.Any())
+                filtered.RemoveAll(x => Preferences.IgnoredItems.Any(ignored => ignored.FullName == x.FullName));
 
-            if (IgnoredFolders != null && IgnoredFolders.Any())
-                filtered.RemoveAll(x => IgnoredFolders.Any(ignored => IsAncestor(x, ignored)));
+            if (Preferences.IgnoredFolders != null && Preferences.IgnoredFolders.Any())
+                filtered.RemoveAll(x => Preferences.IgnoredFolders.Any(ignored => IsAncestor(x, ignored)));
 
-            if (IgnoredFolders != null && IgnoredFolders.Any())
-                filtered.RemoveAll(x => IgnoredFolders.Any(ignored => IsAncestor(x, ignored)));
+            if (Preferences.IgnoredFolders != null && Preferences.IgnoredFolders.Any())
+                filtered.RemoveAll(x => Preferences.IgnoredFolders.Any(ignored => IsAncestor(x, ignored)));
 
-            if (!String.IsNullOrEmpty(IgnorePattern))
-                filtered.RemoveAll(x => new Regex(IgnorePattern).IsMatch(x.FullName));
+            if (!String.IsNullOrEmpty(Preferences.IgnorePattern))
+                filtered.RemoveAll(x => new Regex(Preferences.IgnorePattern).IsMatch(x.FullName));
             return filtered;
         }
 
@@ -99,23 +101,5 @@ namespace Vizr.StandardProviders
         {
             return item.FullName.StartsWith(potentialAncestor.FullName);
         }
-
-        [ProviderPreference]
-        public bool IgnoreUninstallers { get; set; }
-
-        [ProviderPreference]
-        public bool IgnoreDuplicates { get; set; }
-
-        [ProviderPreference]
-        public string IgnorePattern { get; set; }
-
-        [ProviderPreference]
-        public List<DirectoryInfo> AdditionalSearchFolders { get; set; }
-
-        [ProviderPreference]
-        public List<FileInfo> IgnoredItems { get; set; }
-
-        [ProviderPreference]
-        public List<DirectoryInfo> IgnoredFolders { get; set; }
     }
 }

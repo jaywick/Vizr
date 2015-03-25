@@ -44,10 +44,19 @@ namespace Vizr
             if (!providers.Any())
                 return;
 
-            var instances = providers
+            var providerInstances = providers
                 .Select(t => (IResultProvider)Activator.CreateInstance(t));
 
-            Providers.AddRange(instances);
+            var providersWithPreferences = providerInstances
+                .Where(x => x.GetType().GetInterfaces()
+                    .Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IHasPreferences<>)));
+
+            foreach (var provider in providersWithPreferences)
+            {
+                PreferencesLoader.Load(provider);
+            }
+
+            Providers.AddRange(providerInstances);
         }
 
         public IEnumerable<ScoredResult> Query(string queryText)
