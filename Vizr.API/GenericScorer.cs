@@ -8,9 +8,21 @@ namespace Vizr.API
 {
     public class GenericScorer : IResultScorer
     {
-        public IEnumerable<ScoredResult> Score(IEnumerable<IResult> results)
+        public IEnumerable<ScoredResult> Score(string queryText, IEnumerable<IResult> results)
         {
-            return results.Select(x => new ScoredResult(1, x));
+            var scoredResults = new List<ScoredResult>();
+
+            foreach (IResult result in results)
+            {
+                int score = result.SearchableText
+                    .Where(x => x.Text.ToLower().StartsWith(queryText.ToLower()))
+                    .Sum(x => x.Value);
+
+                scoredResults.Add(new ScoredResult(score, result));
+            }
+
+            return scoredResults
+                .Where(x => x.Score > 0);
         }
     }
 }

@@ -29,6 +29,15 @@ namespace Vizr.StandardProviders
 
         public IResultProvider Provider { get; set; }
 
+        public IEnumerable<SearchableText> SearchableText
+        {
+            get
+            {
+                yield return new SearchableText(1, _file.Name);
+            }
+            set { }
+        }
+
         public void Launch()
         {
             Process.Start(_file.FullName);

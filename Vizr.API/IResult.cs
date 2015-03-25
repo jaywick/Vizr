@@ -24,6 +24,11 @@ namespace Vizr.API
         IResultProvider Provider { get; set; }
 
         /// <summary>
+        /// Criteria upon which IResultScorer will score each IResult against a query
+        /// </summary>
+        IEnumerable<SearchableText> SearchableText { get; set; }
+
+        /// <summary>
         /// Fired when user has the result selected and executes it
         /// </summary>
         void Launch();

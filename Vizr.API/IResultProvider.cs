@@ -29,10 +29,15 @@ namespace Vizr.API
         void OnAppHide();
 
         /// <summary>
-        /// Gives the text entered into the application and expects a list of Result items
+        /// Called when user changes query text
+        /// </summary>
+        void OnQueryChange(string queryText);
+
+        /// <summary>
+        /// List of all IResults from this provider
         /// </summary>
         /// <param name="message">Search query from the user</param>
         /// <returns>List of Result based on input <paramref name="message"/></returns>
-        IEnumerable<IResult> Query(string message);
+        IEnumerable<IResult> Items { get; set; }
     }
 }

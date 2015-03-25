@@ -8,6 +8,6 @@ namespace Vizr.API
 {
     public interface IResultScorer
     {
-        IEnumerable<ScoredResult> Score(IEnumerable<IResult> results);
+        IEnumerable<ScoredResult> Score(string query, IEnumerable<IResult> results);
     }
 }

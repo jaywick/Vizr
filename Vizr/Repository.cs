@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Vizr.API;
+using Vizr.Extensions;
 
 namespace Vizr
 {
@@ -17,19 +19,45 @@ namespace Vizr
 
         public Repository()
         {
-            //todo: auto load IResultProvider
             Providers = new List<IResultProvider>();
-            Providers.Add(new StandardProviders.StartMenuProvider());
+            ImportProviders();
 
             Scorer = new GenericScorer();
         }
 
-        public IEnumerable<ScoredResult> Process(string text)
+        private void ImportProviders()
         {
-            var results = Providers
-                .SelectMany(x => x.Query(text));
+            var currentDirectory = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
 
-            return Scorer.Score(results)
+            var dlls = currentDirectory
+                .EnumerateFiles("*.dll")
+                .Where(x => x.Name != "Vizr.API.dll");
+
+            if (!dlls.Any())
+                return;
+
+            var providers = dlls
+                .Select(x => Assembly.LoadFile(x.FullName))
+                .SelectMany(x => x.GetTypes())
+                .Where(t => typeof(IResultProvider).IsAssignableFrom(t));
+
+            if (!providers.Any())
+                return;
+
+            var instances = providers
+                .Select(t => (IResultProvider)Activator.CreateInstance(t));
+
+            Providers.AddRange(instances);
+        }
+
+        public IEnumerable<ScoredResult> Query(string queryText)
+        {
+            Providers.ForEach(x => x.OnQueryChange(queryText));
+
+            var results = Providers
+                .SelectMany(x => x.Items);
+
+            return Scorer.Score(queryText, results)
                 .OrderByDescending(x => x.Score);
         }
 

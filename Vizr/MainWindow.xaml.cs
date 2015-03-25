@@ -102,7 +102,7 @@ namespace Vizr
 
         private void updateResults()
         {
-            listResults.ItemsSource = repository.Process(textQuery.Text).Take(7);
+            listResults.ItemsSource = repository.Query(textQuery.Text).Take(7);
             listResults.SelectFirst();
         }
 

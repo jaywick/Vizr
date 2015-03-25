@@ -12,14 +12,35 @@ namespace Vizr.StandardProviders
     {
         private static string ShortcutFilePattern = "*.lnk";
 
-        private List<FileInfo> _shortcuts = new List<FileInfo>();
-
         public StartMenuProvider()
         {
             ID = Hash.CreateFrom("vizr.standard.startmenu");
+            Items = Enumerable.Empty<IResult>();
         }
 
         public Hash ID { get; set; }
+
+        public IEnumerable<IResult> Items { get; set; }
+
+        public void OnBackgroundStart()
+        {
+            if (!Items.Any())
+                Load();
+        }
+
+        public void OnAppStart()
+        {
+            if (!Items.Any())
+                Load();
+        }
+
+        public void OnAppHide()
+        {
+        }
+
+        public void OnQueryChange(string query)
+        {
+        }
 
         private void Load()
         {
@@ -31,31 +52,10 @@ namespace Vizr.StandardProviders
             files.AddRange(userStartMenu.EnumerateFiles(ShortcutFilePattern, SearchOption.AllDirectories));
             files.AddRange(commonStartMenu.EnumerateFiles(ShortcutFilePattern, SearchOption.AllDirectories));
 
-            _shortcuts = files
+            Items = files
                 .Where(x => !x.Name.ToLower().Contains("uninstal")) // ignore anything that could be an uninstaller
                 .DistinctBy(x => x.FullName) // remove duplicate shortcuts that point to same path
-                .ToList();
-        }
-
-        public void OnBackgroundStart()
-        {
-            if (!_shortcuts.Any())
-                Load();
-        }
-
-        public void OnAppStart()
-        {
-            if (!_shortcuts.Any())
-                Load();
-        }
-
-        public void OnAppHide()
-        {
-        }
-
-        IEnumerable<IResult> IResultProvider.Query(string message)
-        {
-            return _shortcuts.Select(x => new StartMenuResult(this, x));
+                .Select(x => new StartMenuResult(this, x));
         }
     }
 }
