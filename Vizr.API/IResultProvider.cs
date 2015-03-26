@@ -9,9 +9,9 @@ namespace Vizr.API
     public interface IResultProvider
     {
         /// <summary>
-        /// Unique ID of provider. Use <code>Vizr.API.Hash.CreateFrom("com.example.myprovider")</code>
+        /// Unique name of provider such as 'com.example.myprovider'
         /// </summary>
-        Hash ID { get; set; }
+        string UniqueName { get; set; }
 
         /// <summary>
         /// Called when the application is loaded in the background, for example on system start
@@ -32,6 +32,11 @@ namespace Vizr.API
         /// Called when user changes query text
         /// </summary>
         void OnQueryChange(string queryText);
+
+        /// <summary>
+        /// Called when preferences are changed
+        /// </summary>
+        void OnPreferencesUpdated();
 
         /// <summary>
         /// List of all IResults from this provider

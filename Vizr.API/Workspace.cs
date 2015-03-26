@@ -19,10 +19,17 @@ namespace Vizr.API
                 SourcesPath.Create();
         }
 
-        public static FileInfo GetFile(string fileName)
+        public static DirectoryInfo GetProviderFolder(IResultProvider provider)
         {
-            var path = Path.Combine(SourcesPath.FullName, fileName);
-            return new FileInfo(path);
+            var safeFolderName = String.Join("", provider.UniqueName.Where(x => !Path.GetInvalidFileNameChars().Contains(x)));
+            var path = Path.Combine(SourcesPath.FullName, "Providers", safeFolderName);
+
+            var directory = new DirectoryInfo(path);
+
+            if (!directory.Exists)
+                directory.Create();
+
+            return directory;
         }
     }
 }

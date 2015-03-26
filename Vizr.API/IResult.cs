@@ -14,7 +14,7 @@ namespace Vizr.API
         Hash ID { get; set; }
 
         /// <summary>
-        /// Globally unique ID of a Result
+        /// Display text for IResult in list
         /// </summary>
         string Title { get; set; }
 
