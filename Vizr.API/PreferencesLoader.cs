@@ -24,31 +24,30 @@ namespace Vizr.API
             var preferencesPath = GetProviderPrefPath(provider);
 
             if (!File.Exists(preferencesPath))
+            {
+                var newPrefValue = Activator.CreateInstance(prefType);
+                GetPrefProperty(provider).SetValue(provider, newPrefValue);
                 return;
+            }
 
             var jsonContent = File.ReadAllText(preferencesPath);
             var prefValue = JsonConvert.DeserializeObject(jsonContent, prefType);
 
-            provider.GetType().GetProperty("Preferences").SetValue(provider, prefValue);
+            GetPrefProperty(provider).SetValue(provider, prefValue);
         }
 
         public static void Save(IResultProvider provider)
         {
-            var prefValue = provider.GetType().GetProperty("Preferences").GetValue(provider);
+            var prefValue = GetPrefProperty(provider).GetValue(provider);
             var jsonContent = JsonConvert.SerializeObject(prefValue, Formatting.Indented);
             var preferencesPath = GetProviderPrefPath(provider);
 
             File.WriteAllText(preferencesPath, jsonContent);
         }
 
-        private static IEnumerable<System.Reflection.PropertyInfo> GetPreferenceProperties(IResultProvider provider)
+        private static System.Reflection.PropertyInfo GetPrefProperty(IResultProvider provider)
         {
-            return provider
-                .GetType()
-                .GetProperties()
-                .Where(x => x
-                    .GetCustomAttributes(true)
-                    .Any(y => y.GetType() == typeof(ProviderPreferenceAttribute))); ;
+            return provider.GetType().GetProperty("Preferences");
         }
     }
 }

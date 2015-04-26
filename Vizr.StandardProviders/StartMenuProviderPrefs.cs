@@ -8,6 +8,16 @@ namespace Vizr.StandardProviders
 {
     public class StartMenuProviderPrefs : API.IProviderPreferences
     {
+        public StartMenuProviderPrefs()
+        {
+            IgnoreUninstallers = true;
+            IgnoreDuplicates = true;
+            IgnorePattern = null;
+            AdditionalSearchFolders = new List<DirectoryInfo>();
+            IgnoredItems = new List<FileInfo>();
+            IgnoredFolders = new List<DirectoryInfo>();
+        }
+
         public bool IgnoreUninstallers { get; set; }
 
         public bool IgnoreDuplicates { get; set; }

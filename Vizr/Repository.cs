@@ -45,7 +45,8 @@ namespace Vizr
                 return;
 
             var providerInstances = providers
-                .Select(t => (IResultProvider)Activator.CreateInstance(t));
+                .Select(t => (IResultProvider)Activator.CreateInstance(t))
+                .ToList();
 
             var providersWithPreferences = providerInstances
                 .Where(x => x.GetType().GetInterfaces()
