@@ -7,12 +7,12 @@ namespace Vizr.API
 {
     public class SearchableText
     {
-        public int Value { get; set; }
+        public int Weight { get; set; }
         public string Text { get; set; }
 
-        public SearchableText(int value, string text)
+        public SearchableText(int weight, string text)
         {
-            Value = value;
+            Weight = weight;
             Text = text;
         }
     }
