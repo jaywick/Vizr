@@ -26,12 +26,12 @@ namespace Vizr.API
         /// <summary>
         /// Criteria upon which IResultScorer will score each IResult against a query
         /// </summary>
-        IEnumerable<SearchableText> SearchableText { get; set; }
+        IEnumerable<SearchableText> SearchableText { get; }
 
         /// <summary>
-        /// Fired when user has the result selected and executes it
+        /// Fired when user has the result selected and executes it. Returns false if launching failed.
         /// </summary>
-        void Launch();
+        bool Launch();
 
         /// <summary>
         /// Fired when user has the result selected and requests more options on it

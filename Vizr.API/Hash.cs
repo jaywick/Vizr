@@ -29,6 +29,15 @@ namespace Vizr.API
             return new Hash(sha512);
         }
 
+        public static Hash CreateFrom(params object[] compositeItems)
+        {
+            var compositeKey = String.Join(" ", compositeItems.ToString());
+            var messageBytes = Encoding.Default.GetBytes(compositeKey);
+            var sha512 = new SHA512Managed().ComputeHash(messageBytes);
+
+            return new Hash(sha512);
+        }
+
         public static Hash CreateNew()
         {
             return CreateFrom(Guid.NewGuid().ToString());

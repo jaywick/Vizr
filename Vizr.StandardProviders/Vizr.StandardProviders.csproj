@@ -40,10 +40,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
+    <Compile Include="ActionsProvider.cs" />
+    <Compile Include="ActionsProviderPrefs.cs" />
     <Compile Include="StartMenuProviderPrefs.cs" />
+    <Compile Include="ActionResult.cs" />
     <Compile Include="StartMenuResult.cs" />
-    <Compile Include="ShortcutProvider.cs" />
-    <Compile Include="FileSystemProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StartMenuProvider.cs" />
   </ItemGroup>

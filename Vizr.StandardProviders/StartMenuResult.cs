@@ -35,12 +35,12 @@ namespace Vizr.StandardProviders
             {
                 yield return new SearchableText(1, _file.Name);
             }
-            set { }
         }
 
-        public void Launch()
+        public bool Launch()
         {
             Process.Start(_file.FullName);
+            return true;
         }
 
         public void Options()
