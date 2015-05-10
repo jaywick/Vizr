@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="GenericScorer.cs" />
     <Compile Include="Hash.cs" />
+    <Compile Include="History.cs" />
     <Compile Include="IHasPreferences.cs" />
     <Compile Include="IProviderPreferences.cs" />
     <Compile Include="IResult.cs" />

@@ -17,12 +17,21 @@ namespace Vizr
         private List<IResultProvider> Providers { get; set; }
         private IResultScorer Scorer { get; set; }
 
+        public History History { get; private set; }
+
         public Repository()
         {
+            LoadHistory();
+
             Providers = new List<IResultProvider>();
             ImportProviders();
 
             Scorer = new GenericScorer();
+        }
+
+        private void LoadHistory()
+        {
+            History = new History();
         }
 
         private void ImportProviders()

@@ -42,5 +42,63 @@ namespace Vizr.API
         {
             return CreateFrom(Guid.NewGuid().ToString());
         }
+
+        public static Hash Parse(string hashString)
+        {
+            return new Hash(Convert.FromBase64String(hashString));
+        }
+
+        public override string ToString()
+        {
+            return Convert.ToBase64String(_key);
+        }
+
+        public static bool operator ==(Hash a, Hash b)
+        {
+            return a._key.SequenceEqual(b._key);
+        }
+
+        public static bool operator !=(Hash a, Hash b)
+        {
+            return !a._key.SequenceEqual(b._key);
+        }
+
+        public static bool operator ==(Hash a, string b)
+        {
+            return a.ToString() == b;
+        }
+
+        public static bool operator !=(Hash a, string b)
+        {
+            return a.ToString() != b;
+        }
+
+        public static bool operator ==(string a, Hash b)
+        {
+            return a.ToString() == b;
+        }
+
+        public static bool operator !=(string a, Hash b)
+        {
+            return a.ToString() != b;
+        }
+
+        public override int GetHashCode()
+        {
+            return BitConverter.ToInt32(_key, 32);
+        }
+
+        public class Comparer : EqualityComparer<Hash>
+        {
+            public override bool Equals(Hash x, Hash y)
+            {
+                return x == y;
+            }
+
+            public override int GetHashCode(Hash obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
     }
 }

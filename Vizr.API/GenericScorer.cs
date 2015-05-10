@@ -9,9 +9,22 @@ namespace Vizr.API
 {
     public class GenericScorer : IResultScorer
     {
+        private History _history = new History();
+
         public IEnumerable<ScoredResult> Score(string queryText, IEnumerable<IResult> results)
         {
             var scoredResults = new List<ScoredResult>();
+
+            if (queryText == "")
+            {
+                var maxRecentResults = 10;
+                return _history.Items
+                    .GroupBy(x => x.ToString())
+                    .OrderByDescending(g => g.Count())
+                    .Take(maxRecentResults)
+                    .Select(g => g.Key)
+                    .Select((h, i) => new ScoredResult(maxRecentResults - i, results.First(r => r.ID == h)));
+            }
 
             foreach (IResult result in results)
             {

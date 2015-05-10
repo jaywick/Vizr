@@ -26,9 +26,8 @@ namespace Vizr
         {
             ignoreChanges = true;
             InitializeComponent();
-            ignoreChanges = false;
-
             textQuery.Text = "";
+            ignoreChanges = false;
 
             if (StartupOptions.IsBackgroundStart)
             {
@@ -39,6 +38,8 @@ namespace Vizr
             {
                 repository.OnAppStart();
             }
+
+            UpdateResults();
         }
 
         ~MainWindow()
@@ -54,30 +55,32 @@ namespace Vizr
             hotkey.Activated += Hotkey_Activated;
         }
 
-        private IResult selectedEntry
+        private ScoredResult SelectedResult
         {
-            get { return (IResult)listResults.SelectedItem; }
+            get { return (ScoredResult)listResults.SelectedItem; }
         }
 
         private void autoCompleteSelected()
         {
-            if (selectedEntry == null)
+            if (SelectedResult == null)
                 return;
 
-            //textQuery.Text = selectedEntry.HandlePreview();
+            //textQuery.Text = SelectedResult.HandlePreview();
             textQuery.MoveCursorToEnd();
         }
 
-        private void executeSelected()
+        private void ExecuteSelected()
         {
-            if (selectedEntry == null)
+            if (SelectedResult == null)
                 return;
 
-            //var result = selectedEntry.HandleExecute();
-            //if (result == ExecutionResult.Failed)
-            //    playSubtleErrorSound();
+            var result = SelectedResult.Result.Launch();
+            repository.History.Add(SelectedResult.Result, textQuery.Text);
 
-            exit();
+            if (!result)
+                playSubtleErrorSound();
+
+            Exit();
         }
 
         private void playSubtleErrorSound()
@@ -85,7 +88,7 @@ namespace Vizr
             System.Media.SystemSounds.Beep.Play();
         }
 
-        private void exit()
+        private void Exit()
         {
             textQuery.Clear();
 
@@ -100,7 +103,7 @@ namespace Vizr
             }
         }
 
-        private void updateResults()
+        private void UpdateResults()
         {
             listResults.ItemsSource = repository.Query(textQuery.Text).Take(7);
             listResults.SelectFirst();
@@ -122,7 +125,7 @@ namespace Vizr
             switch (e.Key)
             {
                 case Key.Escape:
-                    exit();
+                    Exit();
                     break;
 
                 case Key.Tab:
@@ -130,7 +133,7 @@ namespace Vizr
                     break;
 
                 case Key.Enter:
-                    executeSelected();
+                    ExecuteSelected();
                     break;
 
                 case Key.Up:
@@ -172,12 +175,12 @@ namespace Vizr
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!ignoreChanges)
-                updateResults();
+                UpdateResults();
         }
 
         private void listResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            executeSelected();
+            ExecuteSelected();
         }
 
         #endregion
