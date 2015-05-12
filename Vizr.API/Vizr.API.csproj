@@ -51,6 +51,8 @@
     <Compile Include="IResult.cs" />
     <Compile Include="IResultProvider.cs" />
     <Compile Include="IResultScorer.cs" />
+    <Compile Include="JsonConverters\FileInfoConverter.cs" />
+    <Compile Include="JsonConverters\DirectoryInfoConverter.cs" />
     <Compile Include="PreferencesLoader.cs" />
     <Compile Include="ProviderPreferenceAttribute.cs" />
     <Compile Include="SearchableText.cs" />

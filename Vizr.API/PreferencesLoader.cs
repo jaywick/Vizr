@@ -10,6 +10,12 @@ namespace Vizr.API
 {
     public class PreferencesLoader
     {
+        private static JsonConverter[] Converters = new JsonConverter[]
+        {
+            new JsonConverters.DirectoryInfoConverter(),
+            new JsonConverters.FileInfoConverter(),
+        };
+
         public static string GetProviderPrefPath(IResultProvider provider)
         {
             return Path.Combine(Workspace.GetProviderFolder(provider).FullName, "preferences.json");
@@ -31,7 +37,7 @@ namespace Vizr.API
             }
 
             var jsonContent = File.ReadAllText(preferencesPath);
-            var prefValue = JsonConvert.DeserializeObject(jsonContent, prefType);
+            var prefValue = JsonConvert.DeserializeObject(jsonContent, prefType, Converters);
 
             GetPrefProperty(provider).SetValue(provider, prefValue);
         }
@@ -39,7 +45,8 @@ namespace Vizr.API
         public static void Save(IResultProvider provider)
         {
             var prefValue = GetPrefProperty(provider).GetValue(provider);
-            var jsonContent = JsonConvert.SerializeObject(prefValue, Formatting.Indented);
+
+            var jsonContent = JsonConvert.SerializeObject(prefValue, Formatting.Indented, Converters);
             var preferencesPath = GetProviderPrefPath(provider);
 
             File.WriteAllText(preferencesPath, jsonContent);

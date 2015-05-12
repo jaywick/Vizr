@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Vizr.StandardProviders.Extensions
@@ -21,6 +22,28 @@ namespace Vizr.StandardProviders.Extensions
                 return target.Name;
 
             return target.Name.Substring(0, target.Name.Length - target.Extension.Length);
+        }
+
+        public static bool Like(this string target, string query)
+        {
+            var regexQuery = query
+                .Replace(@"\", @"\\")
+                .Replace(".", @"\.")
+                .Replace("#", @"\d")
+                .Replace("?", ".")
+                .Replace("*", ".*");
+
+            return Regex.IsMatch(target, regexQuery);
+        }
+
+        public static IEnumerable<string> Split(this string target, string separator, StringSplitOptions stringSplitOptions = StringSplitOptions.None)
+        {
+            return target.Split(new [] { separator }, StringSplitOptions.None);
+        }
+
+        public static bool IsDirectory(this FileSystemInfo target)
+        {
+            return target.Attributes.HasFlag(FileAttributes.Directory);
         }
     }
 }
