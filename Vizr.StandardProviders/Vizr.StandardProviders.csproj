@@ -40,16 +40,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
-    <Compile Include="ActionsProvider.cs" />
-    <Compile Include="ActionsProviderPrefs.cs" />
-    <Compile Include="FileSystemSearchProvider.cs" />
-    <Compile Include="FileSystemSearchProviderPrefs.cs" />
-    <Compile Include="StartMenuProviderPrefs.cs" />
-    <Compile Include="ActionResult.cs" />
-    <Compile Include="FileSystemSearchResults.cs" />
-    <Compile Include="StartMenuResult.cs" />
+    <Compile Include="Action\ActionsProvider.cs" />
+    <Compile Include="Action\ActionsProviderPrefs.cs" />
+    <Compile Include="FileSystemSearch\FileSystemSearchProvider.cs" />
+    <Compile Include="FileSystemSearch\FileSystemSearchProviderPrefs.cs" />
+    <Compile Include="StartMenu\StartMenuProviderPrefs.cs" />
+    <Compile Include="Action\ActionResult.cs" />
+    <Compile Include="FileSystemSearch\FileSystemSearchResults.cs" />
+    <Compile Include="StartMenu\StartMenuResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartMenuProvider.cs" />
+    <Compile Include="StartMenu\StartMenuProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vizr.API\Vizr.API.csproj">
