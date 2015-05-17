@@ -15,9 +15,12 @@ namespace Vizr.StandardProviders
         {
             UniqueName = "vizr.standard.actions";
             Items = Enumerable.Empty<IResult>();
+            Icon = "cube";
         }
 
         public string UniqueName { get; set; }
+
+        public string Icon { get; set; }
 
         public IEnumerable<IResult> Items { get; set; }
 

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FontAwesomeIcons.cs" />
     <Compile Include="GenericScorer.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="History.cs" />

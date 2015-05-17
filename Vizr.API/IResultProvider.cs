@@ -14,6 +14,11 @@ namespace Vizr.API
         string UniqueName { get; set; }
 
         /// <summary>
+        /// FontAwesome icon key to display on a result
+        /// </summary>
+        string Icon { get; set; }
+
+        /// <summary>
         /// Called when the application is loaded in the background, for example on system start
         /// </summary>
         void OnBackgroundStart();

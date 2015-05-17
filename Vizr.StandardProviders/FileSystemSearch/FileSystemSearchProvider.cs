@@ -17,9 +17,12 @@ namespace Vizr.StandardProviders
         {
             UniqueName = "vizr.standard.filesystemsearch";
             Items = Enumerable.Empty<IResult>();
+            Icon = "binoculars";
         }
 
         public string UniqueName { get; set; }
+
+        public string Icon { get; set; }
 
         public IEnumerable<IResult> Items { get; set; }
 

@@ -62,6 +62,7 @@
     </ApplicationDefinition>
     <Compile Include="HotKey.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="VisualResult.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

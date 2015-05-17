@@ -73,12 +73,12 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Background" TargetName="Bd" Value="{Binding Path=ParentSource.Decoration.Foreground, FallbackValue=#FF6E6E6E}"/>
+                                <Setter Property="Background" TargetName="Bd" Value="{Binding Path=Brush, FallbackValue=#FF6E6E6E}"/>
                                 <Setter Property="Foreground" Value="#F5F5F5"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="false">
                                 <Setter Property="Background" TargetName="Bd" Value="{x:Null}"/>
-                                <Setter Property="Foreground" Value="{Binding Path=ParentSource.Decoration.Foreground, FallbackValue=#FF6E6E6E}"/>
+                                <Setter Property="Foreground" Value="{Binding Path=Brush, FallbackValue=#FF6E6E6E}"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="false">
                                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>

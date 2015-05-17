@@ -12,7 +12,22 @@
                     <TextBox TabIndex="0" x:Name="textQuery" TextWrapping="NoWrap" Text="search" FontSize="36" DockPanel.Dock="Top" Padding="5,1" Background="{x:Null}" Foreground="#FF5B5B5B" Style="{DynamicResource VizrTextBoxStyle}" TextChanged="textQuery_TextChanged" Margin="55,0,0,0" VerticalContentAlignment="Center" />
                 </Grid>
             </Border>
-            <ListBox TabIndex="1" x:Name="listResults" Height="239" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Style="{DynamicResource VizrListBoxStyle}" ItemContainerStyle="{DynamicResource VizrListBoxItemStyle}" Background="#E5FFFFFF" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listResults_MouseDoubleClick" DisplayMemberPath="Result.Title"/>
+            <ListBox TabIndex="1" x:Name="listResults" Height="239" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Style="{DynamicResource VizrListBoxStyle}" ItemContainerStyle="{DynamicResource VizrListBoxItemStyle}" Background="#E5FFFFFF" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listResults_MouseDoubleClick">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" Text="{Binding IconDisplay}" FontFamily="FontAwesome" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Title}" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Border>
 </Window>

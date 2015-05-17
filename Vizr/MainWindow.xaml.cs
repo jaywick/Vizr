@@ -55,9 +55,9 @@ namespace Vizr
             hotkey.Activated += Hotkey_Activated;
         }
 
-        private ScoredResult SelectedResult
+        private IResult SelectedResult
         {
-            get { return (ScoredResult)listResults.SelectedItem; }
+            get { return ((VisualResult)listResults.SelectedItem).ScoredResult.Result; }
         }
 
         private void autoCompleteSelected()
@@ -74,8 +74,8 @@ namespace Vizr
             if (SelectedResult == null)
                 return;
 
-            var result = SelectedResult.Result.Launch();
-            repository.History.Add(SelectedResult.Result, textQuery.Text);
+            var result = SelectedResult.Launch();
+            repository.History.Add(SelectedResult, textQuery.Text);
 
             if (!result)
                 playSubtleErrorSound();
@@ -105,7 +105,10 @@ namespace Vizr
 
         private void UpdateResults()
         {
-            listResults.ItemsSource = repository.Query(textQuery.Text).Take(7);
+            listResults.ItemsSource = repository.Query(textQuery.Text)
+                .Select(x => new VisualResult(x))
+                .Take(7);
+
             listResults.SelectFirst();
         }
 
