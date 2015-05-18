@@ -34,7 +34,10 @@ namespace Vizr.StandardProviders
             get
             {
                 yield return new SearchableText(10, ActionItem.Title);
-                yield return new SearchableText(10, ActionItem.Tags);
+
+                foreach (var tag in ActionItem.Tags)
+                    yield return new SearchableText(8, tag);
+
                 yield return new SearchableText(1, ActionItem.Path);
                 yield return new SearchableText(1, ActionItem.Application);
             }

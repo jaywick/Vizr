@@ -11,7 +11,7 @@ namespace Vizr.StandardProviders
 {
     public class FileSystemSearchProvider : API.IResultProvider, API.IHasPreferences<FileSystemSearchProviderPrefs>
     {
-        private static string ShortcutFilePattern = "*.lnk";
+        private static string ShortcutFileExtension = ".lnk";
 
         public FileSystemSearchProvider()
         {
@@ -66,24 +66,49 @@ namespace Vizr.StandardProviders
 
         private IEnumerable<FileSystemInfo> PerformSearch(FileSystemSearchProviderPrefs.SearchFolderOption folderOption)
         {
-            var isRecursive = folderOption.RecurseSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-
-            var initialSearchResults = folderOption.RootFolder
-                .EnumerateFileSystemInfos(folderOption.IncludePattern, isRecursive);
-
-            var filteredSearchResults = initialSearchResults
-                .Where(x => MatchesExcludePattern(x, folderOption));
+            var filteredResults = folderOption.RootFolder
+                .EnumerateContents(folderOption.IncludePattern, folderOption.MaxSubfolderDepth)
+                .Where(x => Filter(x, folderOption));
 
             if (folderOption.IgnoreDuplicates)
-                return filteredSearchResults.DistinctBy(x => x.FullName);
+                return filteredResults.DistinctBy(x => x.FullName);
             else
-                return filteredSearchResults;
+                return filteredResults;
         }
 
-        private bool MatchesExcludePattern(FileSystemInfo fileSystemInfo, FileSystemSearchProviderPrefs.SearchFolderOption folderOption)
+        private bool Filter(FileSystemInfo fileSystemInfo, FileSystemSearchProviderPrefs.SearchFolderOption folderOption)
         {
-            return folderOption.ExcludePattern.Split(";")
-                .Any(x => fileSystemInfo.FullName.Like(x));
+            if (!String.IsNullOrWhiteSpace(folderOption.ExcludePattern))
+            {
+                var matchesExclusionPattern = folderOption.ExcludePattern.Split(";")
+                    .Any(x => fileSystemInfo.FullName.Like(x));
+
+                if (!matchesExclusionPattern)
+                    return false;
+            }
+
+            if (folderOption.IgnoreAnyFiles && !fileSystemInfo.IsDirectory())
+                return false;
+
+            if (folderOption.IgnoreFolders && fileSystemInfo.IsDirectory())
+                return false;
+
+            if (folderOption.IgnoreHiddenItems && fileSystemInfo.Attributes.HasFlag(FileAttributes.Hidden))
+                return false;
+
+            if (folderOption.IgnoreHiddenSystemItems && fileSystemInfo.Attributes.HasFlag(FileAttributes.Hidden) && fileSystemInfo.Attributes.HasFlag(FileAttributes.System))
+                return false;
+
+            if (folderOption.IgnoreNonShortcutFiles && !fileSystemInfo.IsDirectory() && fileSystemInfo.Extension != ShortcutFileExtension)
+                return false;
+
+            if (folderOption.IgnoreShortcuts && !fileSystemInfo.IsDirectory() && fileSystemInfo.Extension == ShortcutFileExtension)
+                return false;
+
+            if (folderOption.IgnoreSystemItems && fileSystemInfo.Attributes.HasFlag(FileAttributes.System))
+                return false;
+
+            return true;
         }
     }
 }

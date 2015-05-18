@@ -45,5 +45,39 @@ namespace Vizr.StandardProviders.Extensions
         {
             return target.Attributes.HasFlag(FileAttributes.Directory);
         }
+
+        public static IEnumerable<FileSystemInfo> EnumerateContents(this DirectoryInfo target, string searchPattern, int recursionDepth)
+        {
+            var foldersAndDepth = new Queue<Tuple<DirectoryInfo, int>>();
+            foldersAndDepth.Enqueue(Tuple.Create(target, 0));
+
+            while(foldersAndDepth.Any())
+            {
+                var folderAndDepth = foldersAndDepth.Dequeue();
+
+                var folder = folderAndDepth.Item1;
+                var currentDepth = folderAndDepth.Item2;
+
+                foreach (var file in folder.EnumerateFiles(searchPattern))
+                {
+                    yield return file;
+                }
+
+                if (currentDepth > recursionDepth)
+                    continue;
+
+                foreach (var subfolder in folder.EnumerateDirectories())
+                {
+                    try
+                    {
+                        foldersAndDepth.Enqueue(Tuple.Create(subfolder, ++currentDepth));
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        // ignore unauthorized access
+                    }
+                }
+            }
+        }
     }
 }
