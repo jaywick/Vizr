@@ -36,7 +36,7 @@ namespace Vizr.API
         /// <summary>
         /// Fired when user has the result selected and requests more options on it
         /// </summary>
-        void Options();
+        IPreview Preview { get; set; }
 
         /// <summary>
         /// Fired when user has the result selected and requests to edit it

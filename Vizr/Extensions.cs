@@ -74,5 +74,15 @@ namespace Vizr.Extensions
                 action(item);
             }
         }
+
+        public static void Show(this Control target)
+        {
+            target.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        public static void Hide(this Control target)
+        {
+            target.Visibility = System.Windows.Visibility.Hidden;
+        }
     }
 }

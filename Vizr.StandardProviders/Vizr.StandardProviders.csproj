@@ -44,6 +44,10 @@
     <Compile Include="Action\ActionsProviderPrefs.cs" />
     <Compile Include="FileSystemSearch\FileSystemSearchProvider.cs" />
     <Compile Include="FileSystemSearch\FileSystemSearchProviderPrefs.cs" />
+    <Compile Include="GeneratePassword\GeneratePasswordPreview.cs" />
+    <Compile Include="GeneratePassword\GeneratePasswordProvider.cs" />
+    <Compile Include="GeneratePassword\GeneratePasswordProviderPrefs.cs" />
+    <Compile Include="GeneratePassword\GeneratePasswordResult.cs" />
     <Compile Include="StartMenu\StartMenuProviderPrefs.cs" />
     <Compile Include="Action\ActionResult.cs" />
     <Compile Include="FileSystemSearch\FileSystemSearchResults.cs" />

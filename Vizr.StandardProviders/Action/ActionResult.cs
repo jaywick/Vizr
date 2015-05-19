@@ -75,9 +75,7 @@ namespace Vizr.StandardProviders
             return true;
         }
 
-        public void Options()
-        {
-        }
+        public IPreview Preview { get; set; }
 
         public void Edit()
         {

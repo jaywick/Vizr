@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Media;
 using Vizr.API;
 
@@ -27,6 +29,30 @@ namespace Vizr
             Brush = CreateBrushFromHSV(hue, .663 * 360, .663 * 360);
 
             IconDisplay = FontAwesome.Icons[scoredResult.Result.Provider.Icon];
+        }
+
+        public FlowDocument RenderPreview()
+        {
+            var previewer = ScoredResult.Result.Preview;
+
+            if (previewer == null)
+                previewer = new DefaultPreview(this.ScoredResult.Result);
+
+            FlowDocument document;
+            
+            try
+            {
+                document = (FlowDocument)XamlReader.Parse(previewer.Document);
+            }
+            catch (Exception ex)
+            {
+                previewer = new RenderIssuePreview(this.ScoredResult.Result, ex);
+                document = (FlowDocument)XamlReader.Parse(previewer.Document);
+            }
+
+            document.DataContext = previewer;
+
+            return document;
         }
 
         private static byte Hash8bit(string message)

@@ -10,18 +10,18 @@ using Vizr.StandardProviders.Extensions;
 
 namespace Vizr.StandardProviders
 {
-    public class StartMenuResult : IResult
+    public class GeneratePasswordResult : IResult
     {
-        private FileInfo _file;
-
-        public StartMenuResult(IResultProvider provider, FileInfo file)
+        public GeneratePasswordResult(IResultProvider provider, GeneratePasswordProviderPrefs prefs)
         {
-            _file = file;
+            _preferences = prefs;
 
-            ID = Hash.CreateFrom(file.FullName);
-            Title = file.GetNameWithoutExtension();
+            ID = Hash.CreateFrom(provider.UniqueName);
+            Title = "Generate Password";
             Provider = provider;
         }
+
+        private GeneratePasswordProviderPrefs _preferences;
 
         public Hash ID { get; set; }
 
@@ -33,17 +33,20 @@ namespace Vizr.StandardProviders
         {
             get
             {
-                yield return new SearchableText(1, _file.Name);
+                yield return new SearchableText(1, Title);
             }
         }
 
         public bool Launch()
         {
-            Process.Start(_file.FullName);
             return true;
         }
 
-        public IPreview Preview { get; set; }
+        public IPreview Preview
+        {
+            get { return new GeneratePasswordPreview(this, _preferences); }
+            set { }
+        }
 
         public void Edit()
         {

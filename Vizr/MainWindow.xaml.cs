@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -55,17 +56,33 @@ namespace Vizr
             hotkey.Activated += Hotkey_Activated;
         }
 
-        private IResult SelectedResult
+        private VisualResult SelectedVisualResult
         {
-            get { return ((VisualResult)listResults.SelectedItem).ScoredResult.Result; }
+            get { return ((VisualResult)listResults.SelectedItem); }
         }
 
-        private void autoCompleteSelected()
+        private IResult SelectedResult
+        {
+            get { return SelectedVisualResult.ScoredResult.Result; }
+        }
+
+        private void PreviewSelected()
         {
             if (SelectedResult == null)
                 return;
 
-            //textQuery.Text = SelectedResult.HandlePreview();
+            // hide if already visible
+            if (previewDisplay.IsVisible)
+            {
+                previewDisplay.Hide();
+                listResults.Show();
+                return;
+            }
+
+            previewDisplay.Document = SelectedVisualResult.RenderPreview();
+            previewDisplay.Show();
+            listResults.Hide();
+
             textQuery.MoveCursorToEnd();
         }
 
@@ -105,6 +122,9 @@ namespace Vizr
 
         private void UpdateResults()
         {
+            previewDisplay.Visibility = System.Windows.Visibility.Collapsed;
+            listResults.Visibility = System.Windows.Visibility.Visible;
+
             listResults.ItemsSource = repository.Query(textQuery.Text)
                 .Select(x => new VisualResult(x))
                 .Take(7);
@@ -132,7 +152,7 @@ namespace Vizr
                     break;
 
                 case Key.Tab:
-                    autoCompleteSelected();
+                    PreviewSelected();
                     break;
 
                 case Key.Enter:

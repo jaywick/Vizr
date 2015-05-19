@@ -43,11 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
+    <Compile Include="RenderIssuePreview.cs" />
+    <Compile Include="DefaultPreview.cs" />
     <Compile Include="FontAwesomeIcons.cs" />
     <Compile Include="GenericScorer.cs" />
     <Compile Include="Hash.cs" />
     <Compile Include="History.cs" />
     <Compile Include="IHasPreferences.cs" />
+    <Compile Include="IPreview.cs" />
     <Compile Include="IProviderPreferences.cs" />
     <Compile Include="IResult.cs" />
     <Compile Include="IResultProvider.cs" />
@@ -59,6 +63,7 @@
     <Compile Include="SearchableText.cs" />
     <Compile Include="ScoredResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationException.cs" />
     <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -33,9 +33,7 @@ namespace Vizr.StandardProviders
 
         public IResultProvider Provider { get; set; }
 
-        public void Options()
-        {
-        }
+        public IPreview Preview { get; set; }
 
         public void Edit()
         {

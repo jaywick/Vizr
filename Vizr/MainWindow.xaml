@@ -28,6 +28,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <FlowDocumentScrollViewer x:Name="previewDisplay" Height="239" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Background="#E5FFFFFF" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsSelectionEnabled="False" />
         </Grid>
     </Border>
 </Window>
