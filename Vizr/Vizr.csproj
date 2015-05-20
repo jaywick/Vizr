@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vizr</RootNamespace>
     <AssemblyName>Vizr</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>app.ico</ApplicationIcon>
@@ -57,21 +60,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\FileSystemSearchRules.cs" />
-    <Compile Include="Data\XmlRealizer.cs" />
-    <Compile Include="EntryDecoration.cs" />
-    <Compile Include="Helpers\TextCompare.cs" />
-    <Compile Include="IEntryHandler.cs" />
-    <Compile Include="Sources\ActionsSource.cs" />
-    <Compile Include="SourceBase.cs" />
-    <Compile Include="Helpers\HotKey.cs" />
-    <Compile Include="EntryTypes\ActionEntry.cs" />
-    <Compile Include="Helpers\Workspace.cs" />
+    <Compile Include="HotKey.cs" />
     <Compile Include="Repository.cs" />
-    <Compile Include="Data\IEntryModel.cs" />
-    <Compile Include="Data\Actions.cs" />
-    <Compile Include="Sources\FileSystemSearchSource.cs" />
-    <Compile Include="Sources\StartMenuAppsSource.cs" />
+    <Compile Include="VisualResult.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,8 +71,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EntryTypes\EntryBase.cs" />
-    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -105,16 +95,28 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="app.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Vizr.API\Vizr.API.csproj">
+      <Project>{0c129b7c-222e-4377-a535-3f08eae377ba}</Project>
+      <Name>Vizr.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Vizr.StandardProviders\Vizr.StandardProviders.csproj">
+      <Project>{2108d3a3-7271-47b4-b9fe-14ae0ed291a8}</Project>
+      <Name>Vizr.StandardProviders</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="search.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

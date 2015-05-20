@@ -2,45 +2,97 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Vizr.API;
+using Vizr.Extensions;
 
 namespace Vizr
 {
     public class Repository
     {
-        private List<SourceBase> Sources;
+        private List<IResultProvider> Providers { get; set; }
+        private IResultScorer Scorer { get; set; }
+
+        public History History { get; private set; }
 
         public Repository()
         {
-            Sources = new List<SourceBase>
+            LoadHistory();
+
+            Providers = new List<IResultProvider>();
+            ImportProviders();
+
+            Scorer = new GenericScorer();
+        }
+
+        private void LoadHistory()
+        {
+            History = new History();
+        }
+
+        private void ImportProviders()
+        {
+            var currentDirectory = new DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
+
+            var dlls = currentDirectory
+                .EnumerateFiles("*.dll")
+                .Where(x => x.Name != "Vizr.API.dll");
+
+            if (!dlls.Any())
+                return;
+
+            var providers = dlls
+                .Select(x => Assembly.LoadFile(x.FullName))
+                .SelectMany(x => x.GetTypes())
+                .Where(t => typeof(IResultProvider).IsAssignableFrom(t));
+
+            if (!providers.Any())
+                return;
+
+            var providerInstances = providers
+                .Select(t => (IResultProvider)Activator.CreateInstance(t))
+                .ToList();
+
+            var providersWithPreferences = providerInstances
+                .Where(x => x.GetType().GetInterfaces()
+                    .Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IHasPreferences<>)));
+
+            foreach (var provider in providersWithPreferences)
             {
-                new Sources.ActionsSource(),
-                new Sources.StartMenuAppsSource(),
-                new Sources.FileSystemSearch(),
-            };
+                PreferencesLoader.Load(provider);
+            }
 
-            Sources.ForEach(s => s.Start());
-
-            Update();
+            Providers.AddRange(providerInstances);
         }
 
-        public void Update()
+        public IEnumerable<ScoredResult> Query(string queryText)
         {
-            Sources.ForEach(s => s.Update());
+            Providers.ForEach(x => x.OnQueryChange(queryText));
+
+            var results = Providers
+                .SelectMany(x => x.Items);
+
+            return Scorer.Score(queryText, results)
+                .OrderByDescending(x => x.Score);
         }
 
-        public IEnumerable<EntryBase> QueryAll(string text)
+        public void OnAppStart()
         {
-            Sources.ForEach(s => s.Query(text));
+            Providers.ForEach(x => x.OnAppStart());
+        }
 
-            return Sources.Where(s => s.Enabled)
-                          .OrderBy(s => s.Priority)
-                          .SelectMany(s => s.Results)
-                          .Where(r => r.Relevance > 0)
-                          .OrderByDescending(r => r.Relevance);
+        public void OnAppHide()
+        {
+            Providers.ForEach(x => x.OnAppHide());
+        }
+
+        public void OnBackgroundStart()
+        {
+            Providers.ForEach(x => x.OnBackgroundStart());
         }
     }
 }

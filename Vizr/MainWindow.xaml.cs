@@ -7,11 +7,13 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Vizr;
+using Vizr.API;
+using Vizr.Extensions;
 
 namespace Vizr
 {
@@ -25,12 +27,20 @@ namespace Vizr
         {
             ignoreChanges = true;
             InitializeComponent();
+            textQuery.Text = "";
             ignoreChanges = false;
 
-            textQuery.Text = "";
-
             if (StartupOptions.IsBackgroundStart)
+            {
                 backgroundStart();
+                repository.OnBackgroundStart();
+            }
+            else
+            {
+                repository.OnAppStart();
+            }
+
+            UpdateResults();
         }
 
         ~MainWindow()
@@ -46,30 +56,48 @@ namespace Vizr
             hotkey.Activated += Hotkey_Activated;
         }
 
-        private EntryBase selectedEntry
+        private VisualResult SelectedVisualResult
         {
-            get { return listResults.SelectedItem as EntryBase; }
+            get { return ((VisualResult)listResults.SelectedItem); }
         }
 
-        private void autoCompleteSelected()
+        private IResult SelectedResult
         {
-            if (selectedEntry == null)
+            get { return SelectedVisualResult.ScoredResult.Result; }
+        }
+
+        private void PreviewSelected()
+        {
+            if (SelectedResult == null)
                 return;
 
-            textQuery.Text = selectedEntry.HandlePreview();
+            // hide if already visible
+            if (previewDisplay.IsVisible)
+            {
+                previewDisplay.Hide();
+                listResults.Show();
+                return;
+            }
+
+            previewDisplay.Document = SelectedVisualResult.RenderPreview();
+            previewDisplay.Show();
+            listResults.Hide();
+
             textQuery.MoveCursorToEnd();
         }
 
-        private void executeSelected()
+        private void ExecuteSelected()
         {
-            if (selectedEntry == null)
+            if (SelectedResult == null)
                 return;
 
-            var result = selectedEntry.HandleExecute();
-            if (result == ExecutionResult.Failed)
+            var result = SelectedResult.Launch();
+            repository.History.Add(SelectedResult, textQuery.Text);
+
+            if (!result)
                 playSubtleErrorSound();
 
-            exit();
+            Exit();
         }
 
         private void playSubtleErrorSound()
@@ -77,19 +105,30 @@ namespace Vizr
             System.Media.SystemSounds.Beep.Play();
         }
 
-        private void exit()
+        private void Exit()
         {
             textQuery.Clear();
 
             if (StartupOptions.IsBackgroundStart)
+            {
                 this.Hide();
+                repository.OnAppHide();
+            }
             else
+            {
                 this.Close();
+            }
         }
 
-        private void updateResults()
+        private void UpdateResults()
         {
-            listResults.ItemsSource = repository.QueryAll(textQuery.Text).Take(7);
+            previewDisplay.Visibility = System.Windows.Visibility.Collapsed;
+            listResults.Visibility = System.Windows.Visibility.Visible;
+
+            listResults.ItemsSource = repository.Query(textQuery.Text)
+                .Select(x => new VisualResult(x))
+                .Take(7);
+
             listResults.SelectFirst();
         }
 
@@ -100,6 +139,8 @@ namespace Vizr
         {
             this.Show();
             this.Activate();
+
+            repository.OnAppStart();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -107,15 +148,15 @@ namespace Vizr
             switch (e.Key)
             {
                 case Key.Escape:
-                    exit();
+                    Exit();
                     break;
 
                 case Key.Tab:
-                    autoCompleteSelected();
+                    PreviewSelected();
                     break;
 
                 case Key.Enter:
-                    executeSelected();
+                    ExecuteSelected();
                     break;
 
                 case Key.Up:
@@ -143,7 +184,6 @@ namespace Vizr
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            repository.Update();
             textQuery.Focus();
         }
 
@@ -158,12 +198,12 @@ namespace Vizr
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!ignoreChanges)
-                updateResults();
+                UpdateResults();
         }
 
         private void listResults_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            executeSelected();
+            ExecuteSelected();
         }
 
         #endregion
