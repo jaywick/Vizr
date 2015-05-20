@@ -23,6 +23,14 @@ namespace Vizr.StandardProviders
             return new FileSearchResult(provider, (FileInfo)fileSystemInfo);
         }
 
+        public enum Types { Shortcut, File, Folder }
+
+        public abstract Types Type { get; }
+
+        public abstract string Name { get; }
+
+        public abstract string Path { get; }
+
         public Hash ID { get; set; }
 
         public string Title { get; set; }
@@ -33,7 +41,11 @@ namespace Vizr.StandardProviders
 
         public IResultProvider Provider { get; set; }
 
-        public IPreview Preview { get; set; }
+        public IPreview Preview
+        {
+            get { return new FileSystemSearchPreview(this); }
+            set { }
+        }
 
         public void Edit()
         {
@@ -71,6 +83,21 @@ namespace Vizr.StandardProviders
             Process.Start(_fileInfo.FullName);
             return true;
         }
+
+        public override FileSystemSearchResult.Types Type
+        {
+            get { return Types.File; }
+        }
+
+        public override string Path
+        {
+            get { return _fileInfo.FullName; }
+        }
+
+        public override string Name
+        {
+            get { return _fileInfo.Name; }
+        }
     }
 
     public class ShortcutSearchResult : FileSystemSearchResult
@@ -100,6 +127,21 @@ namespace Vizr.StandardProviders
             Process.Start(_fileInfo.FullName);
             return true;
         }
+
+        public override FileSystemSearchResult.Types Type
+        {
+            get { return Types.Shortcut; }
+        }
+
+        public override string Path
+        {
+            get { return _fileInfo.FullName; }
+        }
+
+        public override string Name
+        {
+            get { return _fileInfo.Name; }
+        }
     }
 
     public class DirectorySearchResult : FileSystemSearchResult
@@ -128,6 +170,21 @@ namespace Vizr.StandardProviders
         {
             Process.Start(_directoryInfo.FullName);
             return true;
+        }
+
+        public override FileSystemSearchResult.Types Type
+        {
+            get { return Types.Folder; }
+        }
+
+        public override string Path
+        {
+            get { return _directoryInfo.FullName; }
+        }
+
+        public override string Name
+        {
+            get { return _directoryInfo.Name; }
         }
     }
 }
