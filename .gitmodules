@@ -1,0 +1,3 @@
+[submodule "Vizr.API"]
+	path = Vizr.API
+	url = https://github.com/jaywick/Vizr.API
