@@ -17,6 +17,8 @@ Run in background using this command line
 
     vizr.exe /startup
 
+When it's running in the background, click <kbd>Alt</kbd> + <kbd>Space</kbd>
+
 ## Breaking Changes
 Currently Vizr is going major architectural changes.
 This is a public alpha-preview so the schema and interfaces is guaranteed to change.
