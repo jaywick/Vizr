@@ -21,9 +21,12 @@ namespace Vizr
 
         public Repository()
         {
-            LoadHistory();
+            Load();
+        }
 
-            Providers = new List<IResultProvider>();
+        public void Load()
+        {
+            LoadHistory();
             ImportProviders();
 
             Scorer = new GenericScorer();
@@ -66,7 +69,7 @@ namespace Vizr
                 PreferencesLoader.Load(provider);
             }
 
-            Providers.AddRange(providerInstances);
+            Providers = new List<IResultProvider>(providerInstances);
         }
 
         public IEnumerable<ScoredResult> Query(string queryText)

@@ -23,6 +23,8 @@ namespace Vizr
         private HotKey hotkey;
         private bool ignoreChanges;
 
+        private SystemTrayIcon trayIcon;
+
         public MainWindow()
         {
             ignoreChanges = true;
@@ -52,8 +54,11 @@ namespace Vizr
         private void backgroundStart()
         {
             this.Hide();
+
+            trayIcon = new SystemTrayIcon(this);
+            
             hotkey = new HotKey(Key.Space, KeyModifier.Alt);
-            hotkey.Activated += Hotkey_Activated;
+            hotkey.Activated += ShowApp;
         }
 
         private VisualResult SelectedVisualResult
@@ -107,17 +112,15 @@ namespace Vizr
 
         private void Exit()
         {
-            textQuery.Clear();
+            if (!StartupOptions.IsBackgroundStart)
+            {
+                ForceExit();
+                return;
+            }
 
-            if (StartupOptions.IsBackgroundStart)
-            {
-                this.Hide();
-                repository.OnAppHide();
-            }
-            else
-            {
-                this.Close();
-            }
+            textQuery.Clear();
+            this.Hide();
+            repository.OnAppHide();
         }
 
         private void UpdateResults()
@@ -135,12 +138,24 @@ namespace Vizr
         #region Event Handlers
 
 
-        void Hotkey_Activated()
+        public void ShowApp()
         {
             this.Show();
             this.Activate();
 
             repository.OnAppStart();
+        }
+
+        public void ForceExit()
+        {
+            trayIcon.Remove();
+            this.Close();
+        }
+
+        public void ReloadProviders()
+        {
+            repository.Load();
+            repository.OnBackgroundStart();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
