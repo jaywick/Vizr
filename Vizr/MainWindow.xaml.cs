@@ -148,7 +148,9 @@ namespace Vizr
 
         public void ForceExit()
         {
+            if (trayIcon != null)
             trayIcon.Remove();
+
             this.Close();
         }
 
