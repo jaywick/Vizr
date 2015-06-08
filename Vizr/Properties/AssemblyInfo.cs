@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Jay Wick Labs")]
 [assembly: AssemblyProduct("Vizr")]
-[assembly: AssemblyCopyright("Copyright © Jay Wick Labs 2014")]
+[assembly: AssemblyCopyright("Copyright © Jay Wick Labs 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,3 +53,4 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("")]

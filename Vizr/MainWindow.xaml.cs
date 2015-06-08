@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -32,17 +33,25 @@ namespace Vizr
             textQuery.Text = "";
             ignoreChanges = false;
 
+            versionInfo.Text = GetVersionInfo();
+
             if (StartupOptions.IsBackgroundStart)
             {
                 backgroundStart();
-                repository.OnBackgroundStart();
+                repository.InvokeProviderStart();
             }
             else
             {
-                repository.OnAppStart();
+                repository.InvokeProviderStart();
             }
 
             UpdateResults();
+        }
+
+        private string GetVersionInfo()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            return FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
         }
 
         ~MainWindow()
@@ -120,7 +129,6 @@ namespace Vizr
 
             textQuery.Clear();
             this.Hide();
-            repository.OnAppHide();
         }
 
         private void UpdateResults()
@@ -142,14 +150,14 @@ namespace Vizr
         {
             this.Show();
             this.Activate();
-
-            repository.OnAppStart();
         }
 
         public void ForceExit()
         {
+            repository.InvokeProviderExit();
+
             if (trayIcon != null)
-            trayIcon.Remove();
+                trayIcon.Remove();
 
             this.Close();
         }
@@ -157,7 +165,7 @@ namespace Vizr
         public void ReloadProviders()
         {
             repository.Load();
-            repository.OnBackgroundStart();
+            repository.InvokeProviderStart();
         }
 
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -190,6 +198,10 @@ namespace Vizr
 
                 case Key.PageDown:
                     listResults.SelectLast();
+                    break;
+
+                case Key.F12:
+                    new PrefsWindow(repository).ShowDialog();
                     break;
 
                 default:

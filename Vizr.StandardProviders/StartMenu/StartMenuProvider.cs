@@ -15,40 +15,42 @@ namespace Vizr.StandardProviders
 
         public StartMenuProvider()
         {
-            UniqueName = "vizr.standard.startmenu";
             Items = Enumerable.Empty<IResult>();
-            Icon = "play";
         }
 
-        public string UniqueName { get; set; }
+        public string UniqueName
+        {
+            get { return "vizr.standard.startmenu"; }
+        }
 
-        public string Icon { get; set; }
+        public string Name
+        {
+            get { return "Start Menu Applications"; }
+        }
+
+        public string Icon
+        {
+            get { return "play"; }
+        }
 
         public IEnumerable<IResult> Items { get; set; }
 
         public StartMenuProviderPrefs Preferences { get; set; }
 
-        public void OnBackgroundStart()
+        public void OnStart()
         {
-            if (!Items.Any())
-                Load();
+            Load();
         }
 
-        public void OnAppStart()
+        public void OnAwake()
         {
-            if (!Items.Any())
-                Load();
         }
 
-        public void OnAppHide()
+        public void OnExit()
         {
         }
 
         public void OnQueryChange(string query)
-        {
-        }
-
-        public void OnPreferencesUpdated()
         {
         }
 

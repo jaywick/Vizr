@@ -20,25 +20,30 @@ namespace Vizr.StandardProviders
 
         public string UniqueName { get; set; }
 
+        public string Name
+        {
+            get { return "Actions"; }
+        }
+
         public string Icon { get; set; }
 
         public IEnumerable<IResult> Items { get; set; }
 
         public ActionsProviderPrefs Preferences { get; set; }
 
-        public void OnBackgroundStart()
+        public void OnStart()
         {
             if (!Items.Any())
                 Load();
         }
 
-        public void OnAppStart()
+        public void OnAwake()
         {
             if (!Items.Any())
                 Load();
         }
 
-        public void OnAppHide()
+        public void OnExit()
         {
         }
 

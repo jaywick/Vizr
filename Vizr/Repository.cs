@@ -14,7 +14,17 @@ namespace Vizr
 {
     public class Repository
     {
-        private List<IResultProvider> Providers { get; set; }
+        private List<IResultProvider> _providers;
+        public IEnumerable<IResultProvider> Providers
+        {
+            get { return _providers; }
+        }
+
+        public IEnumerable<IResultProvider> ProvidersWithPrefs
+        {
+            get { return _providers.Where(HasPreferences); }
+        }
+
         private IResultScorer Scorer { get; set; }
 
         public History History { get; private set; }
@@ -48,54 +58,116 @@ namespace Vizr
             if (!dlls.Any())
                 return;
 
-            var providers = dlls
-                .Select(x => Assembly.LoadFile(x.FullName))
-                .SelectMany(x => x.GetTypes())
-                .Where(t => typeof(IResultProvider).IsAssignableFrom(t));
+            var providerTypes = GetProviderClassesFromDLLs(dlls);
 
-            if (!providers.Any())
+            if (!providerTypes.Any())
                 return;
 
-            var providerInstances = providers
-                .Select(t => (IResultProvider)Activator.CreateInstance(t))
-                .ToList();
+            var providerInstances = CreateProviderInstances(providerTypes);
 
-            var providersWithPreferences = providerInstances
-                .Where(x => x.GetType().GetInterfaces()
-                    .Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IHasPreferences<>)));
+            var providersWithPreferences = providerInstances.Where(HasPreferences);
 
-            foreach (var provider in providersWithPreferences)
+            LoadPreferencesForProviders(providersWithPreferences);
+
+            _providers = new List<IResultProvider>(providerInstances);
+        }
+
+        private static void LoadPreferencesForProviders(IEnumerable<IResultProvider> providers)
+        {
+            foreach (var provider in providers)
             {
-                PreferencesLoader.Load(provider);
+                try
+                {
+                    PreferencesLoader.Load(provider);
+                }
+                catch (Exception ex)
+                {
+                    Logging.WriteLine("Failed loading provider '{0}' - {1}", provider.UniqueName, ex.Message);
+                    continue;
+                }
+            }
+        }
+
+        private static List<Type> GetProviderClassesFromDLLs(IEnumerable<FileInfo> dlls)
+        {
+            var providerTypes = new List<Type>();
+
+            foreach (var dll in dlls)
+            {
+                Assembly assembly;
+                try
+                {
+                    assembly = Assembly.LoadFile(dll.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Logging.WriteLine("Failed loading DLL '{0}' - {1}", dll.Name, ex.Message);
+                    continue;
+                }
+
+                var types = assembly.GetTypes();
+                providerTypes.AddRange(types.Where(t => typeof(IResultProvider).IsAssignableFrom(t)));
             }
 
-            Providers = new List<IResultProvider>(providerInstances);
+            return providerTypes;
+        }
+
+        private static List<IResultProvider> CreateProviderInstances(IEnumerable<Type> providerTypes)
+        {
+            var providerInstances = new List<IResultProvider>();
+
+            foreach (var providerType in providerTypes)
+            {
+                IResultProvider instance;
+                try
+                {
+                    instance = (IResultProvider)Activator.CreateInstance(providerType);
+                }
+                catch (Exception ex)
+                {
+                    Logging.WriteLine("Failed instantiating provider class '{0}' - {1}", providerType.Name, ex.Message);
+                    continue;
+                }
+
+                providerInstances.Add(instance);
+            }
+
+            return providerInstances;
+        }
+
+        private bool HasPreferences(IResultProvider provider)
+        {
+            return provider
+                .GetType()
+                .GetInterfaces()
+                .Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IHasPreferences<>));
         }
 
         public IEnumerable<ScoredResult> Query(string queryText)
         {
-            Providers.ForEach(x => x.OnQueryChange(queryText));
+            _providers.ForEach(x => x.OnQueryChange(queryText));
 
-            var results = Providers
+            var results = _providers
                 .SelectMany(x => x.Items);
 
             return Scorer.Score(queryText, results)
                 .OrderByDescending(x => x.Score);
         }
 
-        public void OnAppStart()
+        public void InvokeProviderStart()
         {
-            Providers.ForEach(x => x.OnAppStart());
+            foreach (var provider in _providers)
+            {
+                provider.OnStart();
+            }
         }
 
-        public void OnAppHide()
+        public void InvokeProviderExit()
         {
-            Providers.ForEach(x => x.OnAppHide());
-        }
-
-        public void OnBackgroundStart()
-        {
-            Providers.ForEach(x => x.OnBackgroundStart());
+            foreach (var provider in _providers)
+            {
+                provider.OnExit();
+            }
         }
     }
 }

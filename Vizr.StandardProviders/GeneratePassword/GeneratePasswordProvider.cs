@@ -13,40 +13,42 @@ namespace Vizr.StandardProviders
     {
         public GeneratePasswordProvider()
         {
-            UniqueName = "vizr.standard.generatepassword";
             Items = Enumerable.Empty<IResult>();
-            Icon = "key";
         }
 
-        public string UniqueName { get; set; }
+        public string UniqueName
+        {
+            get { return "vizr.standard.generatepassword"; }
+        }
 
-        public string Icon { get; set; }
+        public string Name
+        {
+            get { return "Password Generator"; }
+        }
+
+        public string Icon
+        {
+            get { return "key"; }
+        }
 
         public IEnumerable<IResult> Items { get; set; }
 
         public GeneratePasswordProviderPrefs Preferences { get; set; }
 
-        public void OnBackgroundStart()
+        public void OnStart()
         {
-            if (!Items.Any())
-                Load();
+            Load();
         }
 
-        public void OnAppStart()
+        public void OnAwake()
         {
-            if (!Items.Any())
-                Load();
         }
 
-        public void OnAppHide()
+        public void OnExit()
         {
         }
 
         public void OnQueryChange(string query)
-        {
-        }
-
-        public void OnPreferencesUpdated()
         {
         }
 

@@ -22,13 +22,14 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Text="{Binding IconDisplay}" FontFamily="FontAwesome" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
+                            <TextBlock Grid.Column="0" Text="{Binding IconDisplay}" FontFamily="/Vizr;component/Fonts/#FontAwesome" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
                             <TextBlock Grid.Column="2" Text="{Binding Title}" VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <FlowDocumentScrollViewer x:Name="previewDisplay" Height="239" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Background="#E5FFFFFF" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsSelectionEnabled="False" />
+            <FlowDocumentScrollViewer x:Name="previewDisplay" Height="226" Margin="10,75,10,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#6E6E6E" IsTabStop="True" Background="#E5FFFFFF" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsSelectionEnabled="False" />
+            <TextBlock x:Name="versionInfo" Text="" Width="Auto" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,11,2" Opacity="0.5" />
         </Grid>
     </Border>
 </Window>
