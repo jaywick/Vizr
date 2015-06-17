@@ -33,7 +33,7 @@ namespace Vizr
             textQuery.Text = "";
             ignoreChanges = false;
 
-            versionInfo.Text = GetVersionInfo();
+            versionInfo.Text = Common.GetVersionInfo();
 
             if (StartupOptions.IsBackgroundStart)
             {
@@ -46,12 +46,6 @@ namespace Vizr
             }
 
             UpdateResults();
-        }
-
-        private string GetVersionInfo()
-        {
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            return FileVersionInfo.GetVersionInfo(assembly.Location).ProductVersion;
         }
 
         ~MainWindow()

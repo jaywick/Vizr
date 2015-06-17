@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Repository.cs" />

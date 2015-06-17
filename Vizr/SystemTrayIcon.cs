@@ -27,7 +27,8 @@ namespace Vizr
         private WinForms.ContextMenu CreateSystemTrayContextMenu()
         {
             var contextMenu = new WinForms.ContextMenu();
-            contextMenu.MenuItems.Add(new WinForms.MenuItem("Launch Vizr", Notify_LaunchVizr));
+            contextMenu.MenuItems.Add(new WinForms.MenuItem(String.Format("Vizr {0} by Jay Wick Labs", Common.GetVersionInfo())) { Enabled = false, DefaultItem = true });
+            contextMenu.MenuItems.Add(new WinForms.MenuItem("Start search", Notify_LaunchVizr) {  });
             contextMenu.MenuItems.Add(new WinForms.MenuItem("Reload providers", Notify_Reload));
             contextMenu.MenuItems.Add(new WinForms.MenuItem("-"));
             contextMenu.MenuItems.Add(new WinForms.MenuItem("Exit", Notify_Exit));
