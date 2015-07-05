@@ -62,7 +62,17 @@ namespace Vizr
         // thanks to @StanislavKniazev http://stackoverflow.com/a/430909/80428
         private System.Drawing.Icon CreateIcon(ImageSource source)
         {
-            return System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetEntryAssembly().ManifestModule.Name);
+            string path = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+
+            try
+            {
+                return System.Drawing.Icon.ExtractAssociatedIcon(path);
+            }
+            catch (Exception)
+            {
+                Logging.WriteLine("Failed to get icon from" + path);
+                return null;
+            }
         }
 
         public void Remove()
