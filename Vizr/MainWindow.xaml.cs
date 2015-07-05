@@ -36,14 +36,9 @@ namespace Vizr
             versionInfo.Text = Common.GetVersionInfo();
 
             if (StartupOptions.IsBackgroundStart)
-            {
                 backgroundStart();
-                repository.InvokeProviderStart();
-            }
-            else
-            {
-                repository.InvokeProviderStart();
-            }
+
+            repository.InvokeProviderStart();
 
             UpdateResults();
         }
@@ -59,7 +54,7 @@ namespace Vizr
             this.Hide();
 
             trayIcon = new SystemTrayIcon(this);
-            
+
             hotkey = new HotKey(Key.Space, KeyModifier.Alt);
             hotkey.Activated += ShowApp;
         }
