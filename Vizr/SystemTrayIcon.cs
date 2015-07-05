@@ -12,23 +12,27 @@ namespace Vizr
     {
         private MainWindow mainWindow;
         private WinForms.NotifyIcon notifyIcon;
+        private string _versionInfo;
 
         public SystemTrayIcon(MainWindow parent)
         {
             mainWindow = parent;
 
+            _versionInfo = String.Format("Vizr {0} by Jay Wick Labs", Common.GetVersionInfo());
+
             notifyIcon = new WinForms.NotifyIcon();
             notifyIcon.MouseUp += Notify_Click;
             notifyIcon.Icon = CreateIcon(mainWindow.Icon);
             notifyIcon.Visible = true;
+            notifyIcon.Text = _versionInfo;
             notifyIcon.ContextMenu = CreateSystemTrayContextMenu();
         }
 
         private WinForms.ContextMenu CreateSystemTrayContextMenu()
         {
             var contextMenu = new WinForms.ContextMenu();
-            contextMenu.MenuItems.Add(new WinForms.MenuItem(String.Format("Vizr {0} by Jay Wick Labs", Common.GetVersionInfo())) { Enabled = false, DefaultItem = true });
-            contextMenu.MenuItems.Add(new WinForms.MenuItem("Start search", Notify_LaunchVizr) {  });
+            contextMenu.MenuItems.Add(new WinForms.MenuItem(_versionInfo) { Enabled = false, DefaultItem = true });
+            contextMenu.MenuItems.Add(new WinForms.MenuItem("Start search", Notify_LaunchVizr) { });
             contextMenu.MenuItems.Add(new WinForms.MenuItem("Reload providers", Notify_Reload));
             contextMenu.MenuItems.Add(new WinForms.MenuItem("-"));
             contextMenu.MenuItems.Add(new WinForms.MenuItem("Exit", Notify_Exit));
