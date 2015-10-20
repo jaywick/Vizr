@@ -127,7 +127,9 @@ namespace Vizr
 
             listResults.ItemsSource = repository.Query(textQuery.Text)
                 .Select(x => new VisualResult(x))
-                .Take(7);
+                .Take(8);
+
+            emptyListPlaceholder.Visibility = listResults.Items.IsEmpty ? Visibility.Visible : Visibility.Hidden;
 
             listResults.SelectFirst();
         }
@@ -215,6 +217,8 @@ namespace Vizr
 
         private void textQuery_TextChanged(object sender, TextChangedEventArgs e)
         {
+            watermark.Visibility = textQuery.Text == "" ? Visibility.Visible : Visibility.Hidden;
+
             if (!ignoreChanges)
                 UpdateResults();
         }
