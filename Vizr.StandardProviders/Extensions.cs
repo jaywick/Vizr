@@ -68,6 +68,8 @@ namespace Vizr.StandardProviders.Extensions
 
                 foreach (var subfolder in folder.EnumerateDirectories())
                 {
+                    yield return subfolder;
+
                     try
                     {
                         foldersAndDepth.Enqueue(Tuple.Create(subfolder, ++currentDepth));
