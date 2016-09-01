@@ -15,6 +15,8 @@ namespace Vizr
         public ScoredResult ScoredResult { get; set; }
         public SolidColorBrush Brush { get; set; }
         public string IconDisplay { get; set; }
+        public string Description { get; set; }
+        public string Provider { get; set; }
 
         public string Title
         {
@@ -29,6 +31,8 @@ namespace Vizr
             Brush = CreateBrushFromHSV(hue, .663 * 360, .663 * 360);
 
             IconDisplay = FontAwesome.Icons[scoredResult.Result.Provider.Icon];
+            Description = scoredResult.Result.Description;
+            Provider = scoredResult.Result.Provider.Name;
         }
 
         public FlowDocument RenderPreview()

@@ -78,6 +78,9 @@
     <Compile Include="PrefsWindow.xaml.cs">
       <DependentUpon>PrefsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResultItemView.xaml.cs">
+      <DependentUpon>ResultItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SystemTrayIcon.cs" />
     <Compile Include="VisualResult.cs" />
     <Page Include="MainWindow.xaml">
@@ -94,6 +97,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PrefsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

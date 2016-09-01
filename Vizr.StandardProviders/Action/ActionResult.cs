@@ -21,11 +21,14 @@ namespace Vizr.StandardProviders
             
             ID = Hash.CreateFrom(provider.UniqueName, actionItem.Application, actionItem.Path);
             Title = ActionItem.Title;
+            Description = actionItem.Path;
         }
 
         public Hash ID { get; set; }
 
         public string Title { get; set; }
+
+        public string Description { get; set; }
 
         public IResultProvider Provider { get; set; }
 

@@ -20,12 +20,15 @@ namespace Vizr.StandardProviders
 
             ID = Hash.CreateFrom(file.FullName);
             Title = file.GetNameWithoutExtension();
+            Description = file.Directory.FullName;
             Provider = provider;
         }
 
         public Hash ID { get; set; }
 
         public string Title { get; set; }
+
+        public string Description { get; set; }
 
         public IResultProvider Provider { get; set; }
 

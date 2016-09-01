@@ -66,7 +66,7 @@ namespace Vizr
 
         private IResult SelectedResult
         {
-            get { return SelectedVisualResult.ScoredResult.Result; }
+            get { return SelectedVisualResult?.ScoredResult.Result; }
         }
 
         private void PreviewSelected()
@@ -127,7 +127,7 @@ namespace Vizr
 
             listResults.ItemsSource = repository.Query(textQuery.Text)
                 .Select(x => new VisualResult(x))
-                .Take(8);
+                .Take(14);
 
             emptyListPlaceholder.Visibility = listResults.Items.IsEmpty ? Visibility.Visible : Visibility.Hidden;
 

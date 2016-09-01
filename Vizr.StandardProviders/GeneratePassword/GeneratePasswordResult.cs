@@ -18,6 +18,7 @@ namespace Vizr.StandardProviders
 
             ID = Hash.CreateFrom(provider.UniqueName);
             Title = "Generate Password";
+            Description = "Generates a random password";
             Provider = provider;
         }
 
@@ -26,6 +27,8 @@ namespace Vizr.StandardProviders
         public Hash ID { get; set; }
 
         public string Title { get; set; }
+
+        public string Description { get; set; }
 
         public IResultProvider Provider { get; set; }
 

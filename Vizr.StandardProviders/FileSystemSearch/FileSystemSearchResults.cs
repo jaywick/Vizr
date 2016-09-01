@@ -35,6 +35,12 @@ namespace Vizr.StandardProviders
 
         public string Title { get; set; }
 
+        public string Description
+        {
+            get { return Path; }
+            set { throw new InvalidOperationException(); }
+        }
+
         public abstract bool Launch();
 
         public abstract IEnumerable<SearchableText> SearchableText { get; }

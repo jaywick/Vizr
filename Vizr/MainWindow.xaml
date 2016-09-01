@@ -2,35 +2,27 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" x:Class="Vizr.MainWindow"
+        xmlns:local="clr-namespace:Vizr"
         xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Vizr" Height="324" Width="525" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" PreviewKeyDown="Window_PreviewKeyDown" Opacity="0.95" WindowStartupLocation="CenterScreen" Activated="Window_Activated" Icon="app.ico" Topmost="True" PreviewMouseWheel="Window_PreviewMouseWheel">
+        Title="Vizr" Height="400" Width="700" AllowsTransparency="True" WindowStyle="None" Background="{x:Null}" PreviewKeyDown="Window_PreviewKeyDown" Opacity="0.95" WindowStartupLocation="CenterScreen" Activated="Window_Activated" Icon="app.ico" Topmost="True" PreviewMouseWheel="Window_PreviewMouseWheel">
 
     <Border Background="#050505" BorderBrush="#50FFFFFF" BorderThickness="1">
         <Grid>
-            <Border Background="#90505050" Margin="0,0,0,280" BorderBrush="#FFCDCDCD" >
+            <Border Background="#90505050" BorderBrush="#FFCDCDCD" Height="37" VerticalAlignment="Top" >
                 <Grid>
-                    <TextBlock Grid.Column="0" Text="&#xf002;" FontFamily="/Vizr;component/Fonts/#FontAwesome" Foreground="#DDFFFFFF" FontSize="22" Margin="0,0,488,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    <TextBox TabIndex="0" x:Name="textQuery" TextWrapping="NoWrap" Text="" FontSize="22" DockPanel.Dock="Top" Padding="5,0" Background="{x:Null}" Foreground="White" Style="{DynamicResource VizrTextBoxStyle}" TextChanged="textQuery_TextChanged" Margin="40,0,0,0" VerticalContentAlignment="Center" CaretBrush="White" />
-                    <TextBlock x:Name="watermark" IsHitTestVisible="False" Text="Search" FontSize="22" DockPanel.Dock="Top" Padding="5,0" Background="{x:Null}" Foreground="White" Margin="40,6,0,6" VerticalAlignment="Center" Opacity="0.2"/>
+                    <TextBox TabIndex="0" x:Name="textQuery" TextWrapping="NoWrap" Text="" FontSize="20" DockPanel.Dock="Top" Padding="5,0" Background="{x:Null}" Foreground="White" Style="{DynamicResource VizrTextBoxStyle}" TextChanged="textQuery_TextChanged" VerticalContentAlignment="Center" CaretBrush="White" />
+                    <TextBlock x:Name="watermark" IsHitTestVisible="False" Text="Search" FontSize="18" DockPanel.Dock="Top" Padding="5,0" Background="{x:Null}" Foreground="White" Margin="14,3,0,3" VerticalAlignment="Center" Opacity="0.2"/>
                 </Grid>
             </Border>
-            <ListBox TabIndex="1" x:Name="listResults" Height="267" Margin="10,47,10,0" VerticalAlignment="Top" FontSize="22" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#E5FFFFFF" IsTabStop="True" Style="{DynamicResource VizrListBoxStyle}" ItemContainerStyle="{DynamicResource VizrListBoxItemStyle}" Background="{x:Null}" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listResults_MouseDoubleClick">
+            <ListBox TabIndex="1" x:Name="listResults" Height="361" Margin="0,37,0,0" VerticalAlignment="Top" DockPanel.Dock="Top" BorderBrush="{x:Null}" Foreground="#AAFFFFFF" IsTabStop="True" Style="{DynamicResource VizrListBoxStyle}" Background="{x:Null}" ScrollViewer.CanContentScroll="False" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listResults_MouseDoubleClick">
+                <!--ItemContainerStyle="{DynamicResource VizrListBoxItemStyle}" -->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" Text="{Binding IconDisplay}" FontFamily="/Vizr;component/Fonts/#FontAwesome" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Title}" VerticalAlignment="Center"/>
-                        </Grid>
+                        <local:ResultItemView/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <FlowDocumentScrollViewer x:Name="previewDisplay" Height="267" Margin="10,47,10,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" IsTabStop="True" Background="#E5FFFFFF" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsSelectionEnabled="False" />
+            <FlowDocumentScrollViewer x:Name="previewDisplay" Height="361" Margin="0,37,0,0" VerticalAlignment="Top" FontSize="24" DockPanel.Dock="Top" BorderBrush="{x:Null}" IsTabStop="True" Background="#E5FFFFFF" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsSelectionEnabled="False" />
             <TextBlock x:Name="versionInfo" Text="" Width="Auto" Height="Auto" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,11,2" Opacity="0.5" />
             <Grid x:Name="emptyListPlaceholder" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3" Height="59" Margin="174,146,173,117" Visibility="Hidden">
                 <TextBlock Text="&#xf11a;" FontSize="30" FontFamily="/Vizr;component/Fonts/#FontAwesome" Foreground="White" Margin="0,0,0,17" TextAlignment="Center"/>
